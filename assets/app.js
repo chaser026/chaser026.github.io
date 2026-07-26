@@ -17,10 +17,10 @@ const thoughts = site.thoughts || [];
 // Stats
 const docCount = document.querySelector('#doc-count');
 const projectCount = document.querySelector('#project-count');
-const topicCount = document.querySelector('#topic-count');
+const thoughtCount = document.querySelector('#thought-count');
 if (docCount) docCount.textContent = documents.length;
 if (projectCount) projectCount.textContent = projects.length;
-if (topicCount) topicCount.textContent = new Set(documents.map(d => `${d.project}/${d.module}`)).size;
+if (thoughtCount) thoughtCount.textContent = thoughts.length;
 
 // Hero thought
 if (thoughts.length && document.querySelector('[data-hero-thought]')) {
@@ -51,23 +51,17 @@ if (grid) {
   if (emptyState) emptyState.hidden = projects.length > 0;
 }
 
-// Thoughts
-const thoughtsLayout = document.querySelector('#thoughts-layout');
+// Thoughts preview (只展示最近 3 条，完整列表在 thoughts.html)
+const thoughtsPreview = document.querySelector('#thoughts-preview');
 function escapeHtml(v = '') {
   return v.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
 }
-if (thoughtsLayout && thoughts.length) {
-  const [first, ...rest] = thoughts;
-  const featured = `
-    <article class="thought-card featured-thought">
-      <span class="thought-index">01</span>
-      <p class="thought-date">${escapeHtml(first.date || '')} · ${escapeHtml(first.topic || '')}</p>
-      <h3>${escapeHtml(first.title || '')}</h3>
-      <p>${escapeHtml(first.body || '')}</p>
-    </article>`;
-  const list = `<div class="thought-list">${rest.map((t, i) => `
-    <article class="thought-row"><span>${String(i + 2).padStart(2, '0')}</span>
-      <div><p class="thought-date">${escapeHtml(t.date || '')} · ${escapeHtml(t.topic || '')}</p><h3>${escapeHtml(t.title || '')}</h3></div>
-    </article>`).join('')}</div>`;
-  thoughtsLayout.innerHTML = featured + list;
+if (thoughtsPreview && thoughts.length) {
+  const recent = thoughts.slice(0, 3);
+  thoughtsPreview.innerHTML = recent.map((t, i) => `
+    <a class="thought-preview-card" href="thoughts.html#t-${i}">
+      <span class="thought-preview-date">${escapeHtml(t.date || '')}</span>
+      <span class="thought-preview-topic">${escapeHtml(t.topic || '')}</span>
+      <h3>${escapeHtml(t.title || '')}</h3>
+    </a>`).join('');
 }
