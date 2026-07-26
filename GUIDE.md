@@ -37,9 +37,7 @@ python3 -m http.server 8000
 python3 build.py
 
 # 3. 满意后推送
-git add -A
-git commit -m "更新内容"
-git push origin main
+git add -A && git commit -m "更新内容" && git push origin main
 ```
 
 ## 场景一：上传一篇新文档
