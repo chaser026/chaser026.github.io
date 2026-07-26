@@ -121,8 +121,8 @@ python3 build.py && git add -A && git commit -m "更新内容" && git push origi
 ```json
 "social": {
   "github": "https://github.com/chaser026",
-  "bilibili": "https://space.bilibili.com/你的UID",
-  "xiaohongshu": "https://www.xiaohongshu.com/user/profile/你的ID"
+  "bilibili": "https://space.bilibili.com/488678545",
+  "xiaohongshu": "https://www.xiaohongshu.com/user/profile/5eb672450000000001001f5b"
 }
 ```
 
