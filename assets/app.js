@@ -1,61 +1,43 @@
 const documents = window.BLOG_DOCUMENTS || [];
-const projects = [...new Set(documents.map(item => item.project))];
-const topics = [...new Set(documents.map(item => item.topic))];
-let activeProject = '全部';
 
-const searchInput = document.querySelector('#search');
-const filters = document.querySelector('#filters');
+const projectMeta = {
+  CS336: {
+    name: 'CS336',
+    subtitle: 'Language Modeling from Scratch',
+    description: '从零实现大语言模型：Tokenizer、Transformer 架构、训练、推理，到指令微调与强化学习对齐。',
+    accent: 'green',
+  },
+};
+
 const grid = document.querySelector('#project-grid');
 const emptyState = document.querySelector('#empty-state');
 
+const courses = [...new Set(documents.map(doc => doc.course))];
+
 document.querySelector('#doc-count').textContent = documents.length;
-document.querySelector('#project-count').textContent = projects.length;
-document.querySelector('#topic-count').textContent = topics.length;
+document.querySelector('#project-count').textContent = courses.length;
+document.querySelector('#topic-count').textContent = new Set(documents.map(doc => `${doc.course}/${doc.module}`)).size;
 
-function makeFilter(name) {
-  const button = document.createElement('button');
-  button.className = `filter${name === activeProject ? ' active' : ''}`;
-  button.type = 'button';
-  button.textContent = name;
-  button.addEventListener('click', () => {
-    activeProject = name;
-    renderFilters();
-    renderDocuments();
-  });
-  return button;
-}
-
-function renderFilters() {
-  filters.replaceChildren(...['全部', ...projects].map(makeFilter));
-}
-
-function matches(item, query) {
-  const inProject = activeProject === '全部' || item.project === activeProject;
-  const haystack = `${item.title} ${item.project} ${item.topic} ${(item.tags || []).join(' ')} ${item.excerpt || ''}`.toLowerCase();
-  return inProject && haystack.includes(query.toLowerCase());
-}
-
-function card(item) {
-  const article = document.createElement('article');
-  article.className = 'project-card';
+function projectCard(course) {
+  const docs = documents.filter(doc => doc.course === course);
+  const assignments = [...new Set(docs.map(doc => doc.assignment))];
+  const modules = [...new Set(docs.map(doc => doc.module))];
+  const meta = projectMeta[course] || { name: course, subtitle: '', description: '项目文档集合。' };
+  const article = document.createElement('a');
+  article.className = 'project-card project-card-link';
+  article.href = `project.html?id=${encodeURIComponent(course)}`;
   article.innerHTML = `
     <div class="project-color"></div>
-    <h3>${item.title}</h3>
-    <p>${item.excerpt || `${item.topic}项目文档，包含原始讲义与正文预览。`}</p>
+    <p class="card-kicker">${assignments.length} 个作业 · ${modules.length} 个模块</p>
+    <h3>${meta.name}</h3>
+    <p class="card-sub">${meta.subtitle || ''}</p>
+    <p>${meta.description}</p>
     <div class="card-meta">
-      <div><div class="tags">${(item.tags || []).slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('')}</div><span>${item.project} · ${item.topic}</span></div>
-      <a class="open-link" href="reader.html?id=${encodeURIComponent(item.id)}">阅读 →</a>
+      <span>${docs.length} 篇文档</span>
+      <span class="open-link">进入项目 →</span>
     </div>`;
   return article;
 }
 
-function renderDocuments() {
-  const query = searchInput.value.trim();
-  const visible = documents.filter(item => matches(item, query));
-  grid.replaceChildren(...visible.map(card));
-  emptyState.hidden = visible.length > 0;
-}
-
-searchInput.addEventListener('input', renderDocuments);
-renderFilters();
-renderDocuments();
+grid.replaceChildren(...courses.map(projectCard));
+emptyState.hidden = courses.length > 0;

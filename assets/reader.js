@@ -1,5 +1,6 @@
 const params = new URLSearchParams(location.search);
-const item = (window.BLOG_DOCUMENTS || []).find(doc => doc.id === params.get('id'));
+const documents = window.BLOG_DOCUMENTS || [];
+const item = documents.find(doc => doc.id === params.get('id'));
 const root = document.querySelector('#reader');
 
 function escapeHtml(value = '') {
@@ -10,76 +11,65 @@ function inlineMarkup(value) {
   return escapeHtml(value)
     .replace(/`([^`]+)`/g, '<code>$1</code>')
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    .replace(/(https?:\/\/[^\s，。）)]+)/g, '<a href="$1" target="_blank" rel="noreferrer">$1</a>');
 }
 
-function renderDocument(text = '') {
-  const blocks = text.split(/\n{2,}/).map(block => block.trim()).filter(Boolean);
+function renderBlocks(blocks = []) {
   let html = '';
   let list = [];
-  let inCode = false;
-  let code = [];
-
   const flushList = () => {
     if (!list.length) return;
-    html += `<ul>${list.map(item => `<li>${inlineMarkup(item)}</li>`).join('')}</ul>`;
+    html += `<ul>${list.map(text => `<li>${inlineMarkup(text)}</li>`).join('')}</ul>`;
     list = [];
   };
-  const flushCode = () => {
-    if (!inCode) return;
-    html += `<pre><code>${escapeHtml(code.join('\n'))}</code></pre>`;
-    inCode = false;
-    code = [];
-  };
-
   for (const block of blocks) {
-    if (block.startsWith('```')) {
-      if (inCode) flushCode();
-      else { flushList(); inCode = true; }
-      continue;
-    }
-    if (inCode) { code.push(block); continue; }
-    const lines = block.split('\n');
-    if (lines.every(line => /^[-*•]\s+/.test(line))) {
-      flushCode();
-      list.push(...lines.map(line => line.replace(/^[-*•]\s+/, '')));
-      continue;
-    }
+    if (block.type === 'li') { list.push(block.text); continue; }
     flushList();
-    flushCode();
-    if (/^第[一二三四五六七八九十\d]+[章节部分]/.test(block) || /^\d+[.、]\s/.test(block)) {
-      html += `<h2>${inlineMarkup(block)}</h2>`;
-    } else if (/^[（(]?[一二三四五六七八九十\d]+[）)、.]/.test(block)) {
-      html += `<h3>${inlineMarkup(block)}</h3>`;
+    if (block.type === 'heading') {
+      const level = Math.min(4, Math.max(2, block.level || 2));
+      html += `<h${level}>${inlineMarkup(block.text)}</h${level}>`;
+    } else if (block.type === 'code') {
+      const label = block.lang ? `<span class="code-lang">${escapeHtml(block.lang)}</span>` : '';
+      html += `<div class="code-card">${label}<pre><code>${escapeHtml(block.text)}</code></pre></div>`;
     } else {
-      html += `<p>${inlineMarkup(block).replace(/\n/g, '<br>')}</p>`;
+      html += `<p>${inlineMarkup(block.text)}</p>`;
     }
   }
   flushList();
-  flushCode();
   return html;
+}
+
+function buildToc(blocks = []) {
+  const entries = blocks
+    .map((block, index) => ({ block, index }))
+    .filter(({ block }) => block.type === 'heading' && block.level <= 3);
+  if (entries.length < 3) return '';
+  return `<nav class="reader-toc"><span>目录</span>${entries.map(({ block }, i) =>
+    `<a href="#h-${i}" class="toc-l${block.level}">${escapeHtml(block.text)}</a>`).join('')}</nav>`;
 }
 
 if (!item) {
   root.innerHTML = '<div class="empty-state">文档不存在或链接已失效。</div>';
 } else {
+  let headingIndex = 0;
+  const bodyHtml = renderBlocks(item.blocks || []).replace(/<h([234])>/g, (m, level) =>
+    Number(level) <= 3 ? `<h${level} id="h-${headingIndex++}">` : m);
+
   root.innerHTML = `
     <header class="reader-header">
-      <p class="eyebrow">${escapeHtml(item.project)} / ${escapeHtml(item.topic)}</p>
+      <p class="eyebrow">${escapeHtml(item.course)} · ${escapeHtml(item.assignment)} / ${escapeHtml(item.module)}</p>
       <h1>${escapeHtml(item.title)}</h1>
-      <p>${escapeHtml(item.excerpt || '')}</p>
-      <div class="reader-meta">${(item.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
+      <p class="reader-sub">${escapeHtml(item.chapter && item.chapter !== '概述' ? item.chapter : item.module)}</p>
     </header>
+    <div class="reading-progress"><i></i></div>
     <div class="reading-layout">
-      <aside class="reading-sidebar"><span>本文阅读</span><div class="reading-meter"><i></i></div><small id="reading-percent">0%</small></aside>
-      <article class="reader-content">${renderDocument(item.content || '')}</article>
+      <aside class="reading-aside">${buildToc(item.blocks || [])}</aside>
+      <article class="reader-content">${bodyHtml}</article>
     </div>`;
-  const meter = document.querySelector('.reading-meter i');
-  const percent = document.querySelector('#reading-percent');
+
+  const bar = document.querySelector('.reading-progress i');
   window.addEventListener('scroll', () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
-    const value = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 100;
-    meter.style.width = `${value}%`;
-    percent.textContent = `${value}%`;
+    bar.style.width = max > 0 ? `${Math.min(100, (window.scrollY / max) * 100)}%` : '100%';
   });
 }
