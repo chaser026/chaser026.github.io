@@ -11,14 +11,14 @@
   <header class="site-header">
     <a class="brand" href="#top" aria-label="返回首页">
       <span class="brand-mark">C</span>
-      <span><strong>小C的工作台</strong><small>build, learn, share</small></span>
+      <span><strong data-site-title>小C的工作台</strong><small data-site-tagline>build, learn, share</small></span>
     </a>
     <nav class="main-nav" aria-label="主导航">
       <a href="#projects">项目</a>
       <a href="#thoughts">近期所想</a>
       <a href="#about">关于</a>
     </nav>
-    <a class="github-link" href="https://github.com/chaser026" target="_blank" rel="noreferrer">github ↗</a>
+    <a class="github-link" data-github href="https://github.com/chaser026" target="_blank" rel="noreferrer">github ↗</a>
   </header>
 
   <main id="top">
@@ -28,13 +28,13 @@
         <h1>把学习、实验<br><em>和正在发生的想法</em>留下来。</h1>
         <p class="hero-lede">这里是我的个人技术工作台：记录模型训练、推理、对齐实验，也保存那些还没有变成结论的思考。</p>
         <div class="hero-actions">
-          <a class="button button-primary" href="#projects">浏览项目文档 <span>↓</span></a>
-          <a class="button button-quiet" href="https://github.com/chaser026" target="_blank" rel="noreferrer">查看 github <span>↗</span></a>
+          <a class="button button-primary" href="#projects">浏览项目 <span>↓</span></a>
+          <a class="button button-quiet" data-github href="https://github.com/chaser026" target="_blank" rel="noreferrer">查看 github <span>↗</span></a>
         </div>
       </div>
       <aside class="hero-note">
         <span class="note-label">now thinking</span>
-        <p>怎样把复杂的模型系统，讲成别人可以真正拿去使用的知识。</p>
+        <p data-hero-thought>怎样把复杂的模型系统，讲成别人可以真正拿去使用的知识。</p>
         <span class="note-date">持续更新中 · 2026</span>
       </aside>
     </section>
@@ -42,7 +42,7 @@
     <section class="stats shell" aria-label="站点概况">
       <div><strong id="doc-count">0</strong><span>篇文档</span></div>
       <div><strong id="project-count">0</strong><span>个项目</span></div>
-      <div><strong id="topic-count">0</strong><span>个主题</span></div>
+      <div><strong id="topic-count">0</strong><span>个模块</span></div>
       <div class="stats-caption">从底层组件到对齐训练<br>按项目组织，持续积累。</div>
     </section>
 
@@ -52,7 +52,7 @@
         <p class="section-intro">以项目为单位组织学习成果。点击项目卡片，进入后再按作业、章节浏览具体文档。</p>
       </div>
       <div id="project-grid" class="project-grid"></div>
-      <div id="empty-state" class="empty-state" hidden>还没有项目。把文档放入 docs/ 后重新生成索引即可。</div>
+      <div id="empty-state" class="empty-state" hidden>还没有项目。在 content/ 添加内容后运行 build.py 即可。</div>
     </section>
 
     <section id="thoughts" class="section thoughts-band">
@@ -61,30 +61,18 @@
           <div><p class="eyebrow">02 / recent thoughts</p><h2>近期所想</h2></div>
           <p class="section-intro">不一定完整，也不一定正确。先把正在想的事情写下来。</p>
         </div>
-        <div class="thoughts-layout">
-          <article class="thought-card featured-thought">
-            <span class="thought-index">01</span>
-            <p class="thought-date">2026.07.26 · 模型系统</p>
-            <h3>真正难的不是把模型跑起来，而是解释它为什么这样运行。</h3>
-            <p>以后写文档时，除了结论，也要保留 shape、数据流和失败路径。能复现的理解，才是可以传递的理解。</p>
-          </article>
-          <div class="thought-list">
-            <article class="thought-row"><span>02</span><div><p class="thought-date">学习方法</p><h3>先建图，再精读；先找瓶颈，再谈优化。</h3></div></article>
-            <article class="thought-row"><span>03</span><div><p class="thought-date">关于写作</p><h3>好的技术文章，应该让读者少走一段弯路。</h3></div></article>
-            <article class="thought-row"><span>04</span><div><p class="thought-date">正在实践</p><h3>把知识库变成一个可以被别人使用的作品。</h3></div></article>
-          </div>
-        </div>
+        <div id="thoughts-layout" class="thoughts-layout"></div>
       </div>
     </section>
 
     <section id="about" class="section shell about-section">
       <div><p class="eyebrow">03 / about</p><h2>关于这个角落</h2></div>
-      <div class="about-copy"><p>我是 chaser026，关注大模型训练、推理、对齐和工程实现。这个博客不追求把一切包装成最终答案，而是记录从问题、实验到结论的过程。</p><p>项目文档会持续从本地知识库同步进来。每篇文档保留原始文件下载入口，也提供浏览器内的正文预览。</p></div>
+      <div class="about-copy"><p>我是 chaser026，关注大模型训练、推理、对齐和工程实现。这个博客不追求把一切包装成最终答案，而是记录从问题、实验到结论的过程。</p><p>所有文档以 Markdown 维护，运行一次构建脚本即可更新到网页。想了解如何新增项目、上传文档或写今日思考，请查看仓库中的 <code>GUIDE.md</code>。</p></div>
     </section>
   </main>
 
-  <footer class="site-footer shell"><span>© 2026 chaser026</span><span>built with markdown, curiosity, and time.</span></footer>
-  <script src="data/documents.js"></script>
+  <footer class="site-footer shell"><span data-copyright>© 2026 chaser026</span><span>built with markdown, curiosity, and time.</span></footer>
+  <script src="data/site.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>

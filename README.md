@@ -1,25 +1,23 @@
 # 小C的工作台
 
-个人技术博客与项目文档库，面向 GitHub Pages 静态托管。
+个人技术博客与项目文档库，纯静态，托管在 GitHub Pages。
 
-## 内容
+- 首页以项目为粒度展示，进入项目后按作业 / 模块 / 章节浏览文档
+- 文档用 Markdown 维护，支持多级标题、表格、代码高亮、LaTeX 公式和飞书风格提示块
+- 「近期所想」记录阶段性思考
 
-- `项目文档`：按项目和主题组织的 CS336 学习、训练、推理与对齐文档
-- `近期所想`：记录阶段性思考和正在实践的事情
-- `reader.html`：浏览器内阅读文档摘要，并下载原始 `.docx`
-
-## 本地预览
+## 快速使用
 
 ```bash
-python3 -m http.server 8000
+python3 -m http.server 8000   # 本地预览 http://localhost:8000
+python3 build.py              # 修改 content/ 后重新生成 data/site.js
 ```
 
-然后打开 <http://localhost:8000>。
+## 如何维护
 
-## 更新文档
+所有内容都在 `content/` 目录，编辑后运行 `python3 build.py` 即可。新增文档、新建项目、写今日思考的完整步骤见 [GUIDE.md](GUIDE.md)。
 
-把新的 `.docx` 放入 `docs/` 后，重新生成 `data/documents.js`。当前索引生成逻辑会提取 Word 文档中的纯文本摘要；后续可以扩展为 Markdown 正文转换、目录层级和搜索索引。
+## 部署
 
-## GitHub Pages
+仓库 `chaser026.github.io`，`main` 分支根目录，GitHub Pages 选择 `Deploy from a branch → main → / (root)`。
 
-建议创建名为 `chaser026.github.io` 的公开仓库，将本目录推送到 `main` 分支，再在仓库设置中启用 GitHub Pages。

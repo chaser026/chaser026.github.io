@@ -1,0 +1,20 @@
+{
+  "site": {
+    "title": "小C的工作台",
+    "tagline": "build, learn, share",
+    "github": "https://github.com/chaser026",
+    "author": "chaser026"
+  },
+  "projects": [
+    {
+      "id": "CS336",
+      "name": "CS336",
+      "subtitle": "Language Modeling from Scratch",
+      "description": "从零实现大语言模型：Tokenizer、Transformer 架构、训练、推理，到指令微调与强化学习对齐。",
+      "assignments": {
+        "CS336-1讲义【这就是小C】": "A1",
+        "CS336-5讲义【这就是小C】": "A5"
+      }
+    }
+  ]
+}

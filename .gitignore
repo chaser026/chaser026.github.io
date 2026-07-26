@@ -1,0 +1,9 @@
+assignment2-systems/
+paper-reader/
+agent/
+images/
+docs/
+*.mp4
+.claude/
+data/documents.js
+.DS_Store

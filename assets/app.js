@@ -1,43 +1,73 @@
-const documents = window.BLOG_DOCUMENTS || [];
+const site = window.SITE || { site: {}, projects: [], documents: [], thoughts: [] };
+const meta = site.site || {};
 
-const projectMeta = {
-  CS336: {
-    name: 'CS336',
-    subtitle: 'Language Modeling from Scratch',
-    description: '从零实现大语言模型：Tokenizer、Transformer 架构、训练、推理，到指令微调与强化学习对齐。',
-    accent: 'green',
-  },
-};
-
-const grid = document.querySelector('#project-grid');
-const emptyState = document.querySelector('#empty-state');
-
-const courses = [...new Set(documents.map(doc => doc.course))];
-
-document.querySelector('#doc-count').textContent = documents.length;
-document.querySelector('#project-count').textContent = courses.length;
-document.querySelector('#topic-count').textContent = new Set(documents.map(doc => `${doc.course}/${doc.module}`)).size;
-
-function projectCard(course) {
-  const docs = documents.filter(doc => doc.course === course);
-  const assignments = [...new Set(docs.map(doc => doc.assignment))];
-  const modules = [...new Set(docs.map(doc => doc.module))];
-  const meta = projectMeta[course] || { name: course, subtitle: '', description: '项目文档集合。' };
-  const article = document.createElement('a');
-  article.className = 'project-card project-card-link';
-  article.href = `project.html?id=${encodeURIComponent(course)}`;
-  article.innerHTML = `
-    <div class="project-color"></div>
-    <p class="card-kicker">${assignments.length} 个作业 · ${modules.length} 个模块</p>
-    <h3>${meta.name}</h3>
-    <p class="card-sub">${meta.subtitle || ''}</p>
-    <p>${meta.description}</p>
-    <div class="card-meta">
-      <span>${docs.length} 篇文档</span>
-      <span class="open-link">进入项目 →</span>
-    </div>`;
-  return article;
+// Site chrome
+if (meta.title) document.querySelectorAll('[data-site-title]').forEach(el => el.textContent = meta.title);
+if (meta.tagline) document.querySelectorAll('[data-site-tagline]').forEach(el => el.textContent = meta.tagline);
+if (meta.github) document.querySelectorAll('[data-github]').forEach(el => el.href = meta.github);
+if (meta.author) {
+  const year = new Date().getFullYear();
+  document.querySelectorAll('[data-copyright]').forEach(el => el.textContent = `© ${year} ${meta.author}`);
 }
 
-grid.replaceChildren(...courses.map(projectCard));
-emptyState.hidden = courses.length > 0;
+const documents = site.documents || [];
+const projects = site.projects || [];
+const thoughts = site.thoughts || [];
+
+// Stats
+const docCount = document.querySelector('#doc-count');
+const projectCount = document.querySelector('#project-count');
+const topicCount = document.querySelector('#topic-count');
+if (docCount) docCount.textContent = documents.length;
+if (projectCount) projectCount.textContent = projects.length;
+if (topicCount) topicCount.textContent = new Set(documents.map(d => `${d.project}/${d.module}`)).size;
+
+// Hero thought
+if (thoughts.length && document.querySelector('[data-hero-thought]')) {
+  document.querySelector('[data-hero-thought]').textContent = thoughts[0].title;
+}
+
+// Project cards
+const grid = document.querySelector('#project-grid');
+const emptyState = document.querySelector('#empty-state');
+if (grid) {
+  const cards = projects.map(project => {
+    const docs = documents.filter(d => d.project === project.id);
+    const assignments = new Set(docs.map(d => d.assignment));
+    const modules = new Set(docs.map(d => d.module));
+    const a = document.createElement('a');
+    a.className = 'project-card project-card-link';
+    a.href = `project.html?id=${encodeURIComponent(project.id)}`;
+    a.innerHTML = `
+      <div class="project-color"></div>
+      <p class="card-kicker">${assignments.size} 个作业 · ${modules.size} 个模块</p>
+      <h3>${project.name || project.id}</h3>
+      <p class="card-sub">${project.subtitle || ''}</p>
+      <p>${project.description || ''}</p>
+      <div class="card-meta"><span>${docs.length} 篇文档</span><span class="open-link">进入项目 →</span></div>`;
+    return a;
+  });
+  grid.replaceChildren(...cards);
+  if (emptyState) emptyState.hidden = projects.length > 0;
+}
+
+// Thoughts
+const thoughtsLayout = document.querySelector('#thoughts-layout');
+function escapeHtml(v = '') {
+  return v.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
+}
+if (thoughtsLayout && thoughts.length) {
+  const [first, ...rest] = thoughts;
+  const featured = `
+    <article class="thought-card featured-thought">
+      <span class="thought-index">01</span>
+      <p class="thought-date">${escapeHtml(first.date || '')} · ${escapeHtml(first.topic || '')}</p>
+      <h3>${escapeHtml(first.title || '')}</h3>
+      <p>${escapeHtml(first.body || '')}</p>
+    </article>`;
+  const list = `<div class="thought-list">${rest.map((t, i) => `
+    <article class="thought-row"><span>${String(i + 2).padStart(2, '0')}</span>
+      <div><p class="thought-date">${escapeHtml(t.date || '')} · ${escapeHtml(t.topic || '')}</p><h3>${escapeHtml(t.title || '')}</h3></div>
+    </article>`).join('')}</div>`;
+  thoughtsLayout.innerHTML = featured + list;
+}
