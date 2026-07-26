@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="chaser026 的技术项目、学习文档与近期所想。">
+  <title>小C的工作台</title>
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="返回首页">
+      <span class="brand-mark">C</span>
+      <span><strong>小C的工作台</strong><small>build, learn, share</small></span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a href="#projects">项目</a>
+      <a href="#thoughts">近期所想</a>
+      <a href="#about">关于</a>
+    </nav>
+    <a class="github-link" href="https://github.com/chaser026" target="_blank" rel="noreferrer">github ↗</a>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">personal knowledge base / 2026</p>
+        <h1>把学习、实验<br><em>和正在发生的想法</em>留下来。</h1>
+        <p class="hero-lede">这里是我的个人技术工作台：记录模型训练、推理、对齐实验，也保存那些还没有变成结论的思考。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#projects">浏览项目文档 <span>↓</span></a>
+          <a class="button button-quiet" href="https://github.com/chaser026" target="_blank" rel="noreferrer">查看 github <span>↗</span></a>
+        </div>
+      </div>
+      <aside class="hero-note">
+        <span class="note-label">now thinking</span>
+        <p>怎样把复杂的模型系统，讲成别人可以真正拿去使用的知识。</p>
+        <span class="note-date">持续更新中 · 2026</span>
+      </aside>
+    </section>
+
+    <section class="stats shell" aria-label="站点概况">
+      <div><strong id="doc-count">0</strong><span>篇文档</span></div>
+      <div><strong id="project-count">0</strong><span>个项目</span></div>
+      <div><strong id="topic-count">0</strong><span>个主题</span></div>
+      <div class="stats-caption">从底层组件到对齐训练<br>按项目组织，持续积累。</div>
+    </section>
+
+    <section id="projects" class="section shell">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / project library</p><h2>项目文档</h2></div>
+        <p class="section-intro">每个项目都是一条可追溯的学习路径。打开项目，按主题浏览；也可以直接搜索具体概念。</p>
+      </div>
+      <div class="toolbar">
+        <label class="search-box"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜索文档、主题或关键词" autocomplete="off"></label>
+        <div id="filters" class="filters" role="tablist" aria-label="项目筛选"></div>
+      </div>
+      <div id="project-grid" class="project-grid"></div>
+      <div id="empty-state" class="empty-state" hidden>没有找到匹配内容。试试其他关键词。</div>
+    </section>
+
+    <section id="thoughts" class="section thoughts-band">
+      <div class="shell">
+        <div class="section-heading thoughts-heading">
+          <div><p class="eyebrow">02 / recent thoughts</p><h2>近期所想</h2></div>
+          <p class="section-intro">不一定完整，也不一定正确。先把正在想的事情写下来。</p>
+        </div>
+        <div class="thoughts-layout">
+          <article class="thought-card featured-thought">
+            <span class="thought-index">01</span>
+            <p class="thought-date">2026.07.26 · 模型系统</p>
+            <h3>真正难的不是把模型跑起来，而是解释它为什么这样运行。</h3>
+            <p>以后写文档时，除了结论，也要保留 shape、数据流和失败路径。能复现的理解，才是可以传递的理解。</p>
+          </article>
+          <div class="thought-list">
+            <article class="thought-row"><span>02</span><div><p class="thought-date">学习方法</p><h3>先建图，再精读；先找瓶颈，再谈优化。</h3></div></article>
+            <article class="thought-row"><span>03</span><div><p class="thought-date">关于写作</p><h3>好的技术文章，应该让读者少走一段弯路。</h3></div></article>
+            <article class="thought-row"><span>04</span><div><p class="thought-date">正在实践</p><h3>把知识库变成一个可以被别人使用的作品。</h3></div></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section shell about-section">
+      <div><p class="eyebrow">03 / about</p><h2>关于这个角落</h2></div>
+      <div class="about-copy"><p>我是 chaser026，关注大模型训练、推理、对齐和工程实现。这个博客不追求把一切包装成最终答案，而是记录从问题、实验到结论的过程。</p><p>项目文档会持续从本地知识库同步进来。每篇文档保留原始文件下载入口，也提供浏览器内的正文预览。</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer shell"><span>© 2026 chaser026</span><span>built with markdown, curiosity, and time.</span></footer>
+  <script src="data/documents.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
