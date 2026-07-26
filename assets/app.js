@@ -14,6 +14,30 @@ const documents = site.documents || [];
 const projects = site.projects || [];
 const thoughts = site.thoughts || [];
 
+// Social links (个人主页链接)
+const SOCIAL_LABELS = {
+  github: 'GitHub',
+  bilibili: '哔哩哔哩',
+  xiaohongshu: '小红书',
+  zhihu: '知乎',
+  twitter: 'Twitter',
+  x: 'X',
+  juejin: '掘金',
+  email: '邮箱',
+};
+const socialContainer = document.querySelector('#social-links');
+if (socialContainer && meta.social) {
+  const links = Object.entries(meta.social)
+    .filter(([, url]) => url && !/你的|请填|xxx/i.test(url))
+    .map(([key, url], i) => {
+      const label = SOCIAL_LABELS[key] || key;
+      const cls = i === 0 ? 'button button-primary' : 'button button-quiet';
+      const href = key === 'email' ? `mailto:${url}` : url;
+      return `<a class="${cls}" href="${href}" target="_blank" rel="noreferrer">${label} <span>↗</span></a>`;
+    });
+  socialContainer.innerHTML = links.join('');
+}
+
 // Stats
 const docCount = document.querySelector('#doc-count');
 const projectCount = document.querySelector('#project-count');

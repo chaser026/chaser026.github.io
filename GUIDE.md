@@ -114,7 +114,55 @@ python3 build.py && git add -A && git commit -m "更新内容" && git push origi
 
 运行 `python3 build.py` 并推送即可。
 
+## 场景四：配置个人主页链接（首页）
+
+编辑 `content/projects.json` 的 `site.social`，键是平台，值是主页链接：
+
+```json
+"social": {
+  "github": "https://github.com/chaser026",
+  "bilibili": "https://space.bilibili.com/你的UID",
+  "xiaohongshu": "https://www.xiaohongshu.com/user/profile/你的ID"
+}
+```
+
+- 含「你的 / 请填 / xxx」占位符的链接会被自动跳过，不会显示；
+- 支持任意平台键：`github`、`bilibili`、`xiaohongshu`、`zhihu`、`twitter`、`juejin`、`email` 等；
+- `email` 会自动生成 `mailto:` 链接；
+- 第一个链接显示为主色按钮，其余为浅色按钮。
+
+这些链接显示在首页 hero 区（原「浏览项目 / 查看 github」按钮的位置）。对应的 HTML 容器是 `index.html` 中的 `<div class="hero-actions" id="social-links"></div>`，由 `assets/app.js` 填充。
+
+## 场景五：开启评论功能（giscus）
+
+评论基于 GitHub Discussions，用 [giscus](https://giscus.app) 实现，显示在每篇文档底部。开启步骤：
+
+1. 在 GitHub 仓库 `Settings → General → Features` 勾选 **Discussions**；
+2. 打开 https://github.com/apps/giscus ，点 **Install**，授权给 `chaser026.github.io` 仓库；
+3. 打开 https://giscus.app ，在「仓库」填 `chaser026/chaser026.github.io`，选择映射方式 `pathname`，选一个 Discussion 分类（推荐 `Announcements`）；
+4. 页面下方会生成一段配置，把其中的 `data-repo-id` 和 `data-category-id` 复制出来；
+5. 填入 `content/projects.json` 的 `site.giscus`，并把 `enabled` 改成 `true`：
+
+   ```json
+   "giscus": {
+     "enabled": true,
+     "repo": "chaser026/chaser026.github.io",
+     "repoId": "R_kgD...",
+     "category": "Announcements",
+     "categoryId": "DIC_kwD...",
+     "mapping": "pathname",
+     "theme": "light",
+     "lang": "zh-CN"
+   }
+   ```
+
+6. 运行 `python3 build.py` 并推送。未配置前，文档底部会显示一条「评论功能尚未配置」的提示，不影响其他功能。
+
 ## 常见问题
+
+- **`git push` 报 `HTTP2 framing layer` 或连不上 443？** 本仓库已设置 `git config http.version HTTP/1.1`。若仍失败多为网络波动，稍后重试即可。
+- **GitHub 贡献者显示 no contributor？** 需保证提交邮箱与 GitHub 账号绑定的邮箱一致。本仓库已配置 `user.name=chaser026`、`user.email=1615629622@qq.com`；请确认该邮箱已加入你的 GitHub 账号（Settings → Emails）。
+
 
 - **改了内容但网页没变？** 一定要先跑 `python3 build.py` 重新生成 `data/site.js`，再刷新浏览器（必要时强制刷新）。
 - **`data/site.js` 能手动改吗？** 不建议，它是构建产物，下次构建会被覆盖。

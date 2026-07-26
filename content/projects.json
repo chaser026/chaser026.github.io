@@ -3,7 +3,22 @@
     "title": "小C的工作台",
     "tagline": "build, learn, share",
     "github": "https://github.com/chaser026",
-    "author": "chaser026"
+    "author": "chaser026",
+    "social": {
+      "github": "https://github.com/chaser026",
+      "bilibili": "https://space.bilibili.com/你的B站UID",
+      "xiaohongshu": "https://www.xiaohongshu.com/user/profile/你的小红书ID"
+    },
+    "giscus": {
+      "enabled": false,
+      "repo": "chaser026/chaser026.github.io",
+      "repoId": "在 giscus.app 生成后填入",
+      "category": "Announcements",
+      "categoryId": "在 giscus.app 生成后填入",
+      "mapping": "pathname",
+      "theme": "light",
+      "lang": "zh-CN"
+    }
   },
   "projects": [
     {
