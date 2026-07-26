@@ -33,11 +33,8 @@
 python3 -m http.server 8000
 # 浏览器打开 http://localhost:8000
 
-# 2. 修改 content/ 里的内容后重新构建
-python3 build.py
-
-# 3. 满意后推送
-git add -A && git commit -m "更新内容" && git push origin main
+# 2.修改 content/ 里的内容后重新构建， 满意后推送
+python3 build.py && git add -A && git commit -m "更新内容" && git push origin main
 ```
 
 ## 场景一：上传一篇新文档
