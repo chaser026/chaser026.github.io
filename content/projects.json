@@ -6,8 +6,8 @@
     "author": "chaser026",
     "social": {
       "github": "https://github.com/chaser026",
-      "bilibili": "https://space.bilibili.com/你的B站UID",
-      "xiaohongshu": "https://www.xiaohongshu.com/user/profile/你的小红书ID"
+      "bilibili": "https://space.bilibili.com/488678545",
+      "xiaohongshu": "https://www.xiaohongshu.com/user/profile/5eb672450000000001001f5b"
     },
     "giscus": {
       "enabled": false,
@@ -17,6 +17,12 @@
       "categoryId": "在 giscus.app 生成后填入",
       "mapping": "pathname",
       "theme": "light",
+      "lang": "zh-CN"
+    },
+    "twikoo": {
+      "enabled": true,
+      "envId": "https://chaserspaces.netlify.app/.netlify/functions/twikoo",
+      "region": "",
       "lang": "zh-CN"
     }
   },
@@ -29,6 +35,15 @@
       "assignments": {
         "CS336-1讲义【这就是小C】": "A1",
         "CS336-5讲义【这就是小C】": "A5"
+      }
+    },
+    {
+      "id": "读论文",
+      "name": "读论文",
+      "subtitle": "Paper Reading",
+      "description": "精读大模型技术报告：从 Qwen 系列出发，拆解架构、训练与对齐的关键设计。",
+      "assignments": {
+        "Qwen": "Qwen 系列"
       }
     }
   ]

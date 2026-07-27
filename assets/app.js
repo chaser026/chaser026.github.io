@@ -1,4 +1,4 @@
-const site = window.SITE || { site: {}, projects: [], documents: [], thoughts: [] };
+const site = window.SITE || { site: {}, projects: [], documents: [] };
 const meta = site.site || {};
 
 // Site chrome
@@ -12,7 +12,6 @@ if (meta.author) {
 
 const documents = site.documents || [];
 const projects = site.projects || [];
-const thoughts = site.thoughts || [];
 
 // Social links (个人主页链接)
 const SOCIAL_LABELS = {
@@ -41,15 +40,8 @@ if (socialContainer && meta.social) {
 // Stats
 const docCount = document.querySelector('#doc-count');
 const projectCount = document.querySelector('#project-count');
-const thoughtCount = document.querySelector('#thought-count');
 if (docCount) docCount.textContent = documents.length;
 if (projectCount) projectCount.textContent = projects.length;
-if (thoughtCount) thoughtCount.textContent = thoughts.length;
-
-// Hero thought
-if (thoughts.length && document.querySelector('[data-hero-thought]')) {
-  document.querySelector('[data-hero-thought]').textContent = thoughts[0].title;
-}
 
 // Project cards
 const grid = document.querySelector('#project-grid');
@@ -75,17 +67,15 @@ if (grid) {
   if (emptyState) emptyState.hidden = projects.length > 0;
 }
 
-// Thoughts preview (只展示最近 3 条，完整列表在 thoughts.html)
-const thoughtsPreview = document.querySelector('#thoughts-preview');
-function escapeHtml(v = '') {
-  return v.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[c]));
-}
-if (thoughtsPreview && thoughts.length) {
-  const recent = thoughts.slice(0, 3);
-  thoughtsPreview.innerHTML = recent.map((t, i) => `
-    <a class="thought-preview-card" href="thoughts.html#t-${i}">
-      <span class="thought-preview-date">${escapeHtml(t.date || '')}</span>
-      <span class="thought-preview-topic">${escapeHtml(t.topic || '')}</span>
-      <h3>${escapeHtml(t.title || '')}</h3>
-    </a>`).join('');
+// 树洞横栏 · 萤火
+const bandField = document.querySelector('#hole-band-fireflies');
+if (bandField) {
+  const count = matchMedia('(max-width: 800px)').matches ? 6 : 14;
+  for (let i = 0; i < count; i++) {
+    const f = document.createElement('i');
+    f.className = 'firefly';
+    const s = 2 + Math.random() * 2.5;
+    f.style.cssText = `left:${Math.random() * 100}%;top:${15 + Math.random() * 70}%;width:${s}px;height:${s}px;animation-duration:${7 + Math.random() * 8}s,${2.6 + Math.random() * 3}s;animation-delay:${-Math.random() * 10}s,${Math.random() * 3}s;`;
+    bandField.appendChild(f);
+  }
 }

@@ -7,3 +7,6 @@ docs/
 .claude/
 data/documents.js
 .DS_Store
+
+# 私人知识库原始文档 —— 绝不上传到 GitHub
+md知识库/

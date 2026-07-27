@@ -8,7 +8,6 @@
 
 内容组织约定（详见 GUIDE.md）：
     content/projects.json                     站点与项目元信息
-    content/thoughts.json                     今日思考条目
     content/projects/<项目id>/<...>/<文档>.md  项目文档，目录层级自动成为导航层级
 """
 
@@ -31,7 +30,9 @@ def first_heading(md, fallback):
     for line in md.splitlines():
         m = re.match(r'^#{1,3}\s+(.*)', line.strip())
         if m:
-            return m.group(1).strip()
+            title = m.group(1).strip()
+            # 去掉 Markdown 反斜杠转义（如 `Qwen2\.5` -> `Qwen2.5`），不影响 LaTeX 命令
+            return re.sub(r'\\([!"#$%&\'()*+,\-./:;<=>?@\[\\\]^_`{|}~])', r'\1', title)
     return fallback
 
 
@@ -51,7 +52,6 @@ def slugify(rel_path):
 
 def build():
     meta = read_json(CONTENT / 'projects.json', {'site': {}, 'projects': []})
-    thoughts = read_json(CONTENT / 'thoughts.json', [])
 
     documents = []
     projects_out = []
@@ -90,7 +90,6 @@ def build():
         'site': meta.get('site', {}),
         'projects': projects_out,
         'documents': documents,
-        'thoughts': thoughts,
     }
 
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
@@ -98,7 +97,7 @@ def build():
         'window.SITE = ' + json.dumps(site, ensure_ascii=False) + ';\n',
         encoding='utf-8',
     )
-    print(f'built {len(documents)} documents across {len(projects_out)} projects, {len(thoughts)} thoughts')
+    print(f'built {len(documents)} documents across {len(projects_out)} projects')
     print(f'output -> {OUTPUT.relative_to(ROOT)}')
 
 

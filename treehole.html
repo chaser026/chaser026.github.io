@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="小C的公开树洞：不用注册，起个名字就能留下一句话，也可以听听别人的回声。">
+  <meta name="theme-color" content="#0a1811">
+  <title>树洞 · 小C的工作台</title>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/treehole.css">
+</head>
+<body class="hole-page">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="返回首页">
+      <span class="brand-mark">C</span>
+      <span><strong>小C的工作台</strong><small>build, learn, share</small></span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a href="index.html#projects">项目</a>
+      <a href="treehole.html" class="nav-active">树洞</a>
+    </nav>
+    <a class="github-link" href="https://github.com/chaser026" target="_blank" rel="noreferrer">github ↗</a>
+  </header>
+
+  <main>
+    <!-- 开场：夜里的森林 -->
+    <section class="forest">
+      <div class="sky" aria-hidden="true"></div>
+      <div class="moon" aria-hidden="true"></div>
+      <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
+      <svg class="tree tree-far" viewBox="0 0 240 420" aria-hidden="true">
+        <g fill="#102619">
+          <path d="M112 420 C116 330 106 292 116 236 L130 236 C136 300 130 356 138 420 Z"/>
+          <path d="M122 268 C96 246 84 238 66 228" stroke="#102619" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <circle cx="86" cy="196" r="52"/>
+          <circle cx="146" cy="168" r="60"/>
+          <circle cx="196" cy="210" r="42"/>
+          <circle cx="44" cy="170" r="34"/>
+        </g>
+      </svg>
+
+      <svg class="tree tree-near" viewBox="0 0 420 560" aria-hidden="true">
+        <defs>
+          <radialGradient id="hollowGlow" cx="50%" cy="45%" r="65%">
+            <stop offset="0%" stop-color="#ffedbe"/>
+            <stop offset="38%" stop-color="#f2c96b"/>
+            <stop offset="100%" stop-color="rgba(242,201,107,0)"/>
+          </radialGradient>
+        </defs>
+        <g fill="#050d09">
+          <path d="M186 560 C192 470 174 424 188 352 C196 310 178 296 190 246 L222 248 C226 300 216 336 226 392 C236 452 228 506 242 560 Z"/>
+          <path d="M196 296 C156 262 132 246 98 230" stroke="#050d09" stroke-width="17" fill="none" stroke-linecap="round"/>
+          <path d="M216 276 C258 250 288 240 330 218" stroke="#050d09" stroke-width="15" fill="none" stroke-linecap="round"/>
+          <circle cx="116" cy="192" r="72"/>
+          <circle cx="212" cy="136" r="90"/>
+          <circle cx="306" cy="190" r="68"/>
+          <circle cx="158" cy="112" r="58"/>
+          <circle cx="272" cy="104" r="54"/>
+          <circle cx="348" cy="150" r="40"/>
+          <circle cx="64" cy="150" r="42"/>
+        </g>
+        <ellipse class="hollow" cx="207" cy="438" rx="36" ry="50" fill="url(#hollowGlow)" opacity=".8"/>
+        <ellipse cx="207" cy="438" rx="14" ry="23" fill="#0a130d"/>
+      </svg>
+
+      <div class="ground" aria-hidden="true"></div>
+
+      <div class="shell forest-copy reveal">
+        <p class="eyebrow hole-eyebrow">tree hollow / 匿名 · 公开 · 免费</p>
+        <h1>有些话，<br><em>说给树听就好。</em></h1>
+        <p class="forest-lede">这是一棵谁都可以靠近的树。不用注册，不用登录，起个名字，把想说的留下——碎碎念、小委屈、没说出口的开心，山风和萤火都会替你收着。</p>
+        <div class="forest-actions">
+          <a class="button hole-button" href="#wall">留下一句 <span>↓</span></a>
+          <a class="button hole-button-quiet" href="#wall">先听听回声 <span>→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 回声墙 -->
+    <section id="wall" class="wall">
+      <div class="shell">
+        <div class="section-heading reveal">
+          <div><p class="eyebrow hole-eyebrow">echoes / 树洞回声</p><h2>回声墙</h2></div>
+          <p class="section-intro">说出的每一句，都会在这里亮起来。你可以小声，也可以尽情；说完记得看一眼下面的约定。</p>
+        </div>
+        <div class="twikoo-frame reveal">
+          <div id="twikoo"></div>
+        </div>
+        <p class="wall-note reveal">发言会显示你填的昵称；不想被认出，就随便起一个。垃圾留言会被树洞主人悄悄扫掉。</p>
+      </div>
+    </section>
+
+    <!-- 树洞约定 -->
+    <section class="promise">
+      <div class="shell">
+        <div class="reveal">
+          <p class="eyebrow hole-eyebrow">promises / 树洞约定</p>
+          <h2>树洞约定</h2>
+        </div>
+        <div class="promise-grid reveal">
+          <div class="promise-card">
+            <span class="promise-no">01</span>
+            <h3>温柔一点</h3>
+            <p>这里只负责接住，不负责审判。别人的黑夜，也许正是你的白天。</p>
+          </div>
+          <div class="promise-card">
+            <span class="promise-no">02</span>
+            <h3>随意一点</h3>
+            <p>不用起承转合，不用标点齐全。半句话、一声叹气，都算数。</p>
+          </div>
+          <div class="promise-card">
+            <span class="promise-no">03</span>
+            <h3>留一盏灯</h3>
+            <p>如果看见有人在黑着，顺手留句好话。回声里最暖的，往往是陌生人。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer dark-footer shell"><span>© 2026 chaser026</span><span>the tree keeps every word.</span></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/twikoo@1.7.15/dist/twikoo.min.js"></script>
+  <script src="data/site.js"></script>
+  <script src="assets/treehole.js"></script>
+</body>
+</html>

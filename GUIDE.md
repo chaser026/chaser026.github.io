@@ -6,8 +6,9 @@
 
 ```text
 .
-├── index.html            首页（项目列表 + 近期所想 + 关于）
+├── index.html            首页（项目列表 + 树洞入口）
 ├── project.html          项目详情页（作业 / 模块 / 章节 / 文档导航）
+├── treehole.html         树洞页（Twikoo 匿名留言墙）
 ├── reader.html           文档阅读页（Markdown 渲染 + 代码高亮 + 公式）
 ├── build.py              构建脚本：扫描 content/ 生成 data/site.js
 ├── assets/               样式与前端逻辑
@@ -19,12 +20,22 @@
 │   └── site.js           构建产物（不要手改）
 └── content/              ← 你唯一需要编辑的目录
     ├── projects.json     站点信息 + 项目列表
-    ├── thoughts.json     近期所想
     └── projects/
         └── <项目id>/...  项目文档（.md）
 ```
 
 核心原则：**只编辑 `content/`，然后运行 `python3 build.py`。**
+
+## 私人知识库（md知识库/）
+
+`md知识库/` 存放原始讲义与笔记，**已被 `.gitignore` 排除，永远不会上传到 GitHub**；网站只发布 `content/projects/` 中的内容。
+
+推荐工作流：
+
+1. 在 `md知识库/<项目>/` 里按「作业 / 模块 / 章节」层级整理原始文档；
+2. 把要公开的部分复制到 `content/projects/<项目id>/` 的相同层级下；
+3. 新项目需先在 `content/projects.json` 的 `projects` 数组注册（见场景二）；
+4. 运行 `python3 build.py` 并推送。
 
 ## 快速开始
 
@@ -99,20 +110,30 @@ python3 build.py && git add -A && git commit -m "更新内容" && git push origi
 
 3. 运行 `python3 build.py` 并推送。首页会自动出现新项目卡片。
 
-## 场景三：写一条今日思考
+## 场景三：启用树洞（Twikoo 匿名留言）
 
-编辑 `content/thoughts.json`，在数组最前面加一条（第一条会作为首页 hero 语和置顶卡片）：
+树洞页（`treehole.html`）基于 [Twikoo](https://twikoo.js.org/)：访客起个昵称就能发言，无需注册账号；留言存在你自己的 MongoDB 数据库里。以下两种方式全免费，**推荐方式 A**（大陆访问较快，本站在用）。
 
-```json
-{
-  "date": "2026-08-01",
-  "topic": "今日主题",
-  "title": "一句话核心想法。",
-  "body": "补充说明，可留空。"
-}
-```
+### 方式 A：Netlify 部署（本站在用）
 
-运行 `python3 build.py` 并推送即可。
+1. **建免费数据库**：注册 [MongoDB Atlas](https://www.mongodb.com/atlas/database) → 创建 M0 免费集群 → Database Access 里创建用户 → Network Access 里放行 `0.0.0.0/0` → Connect 获取连接串 `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/twikoo`（把 `<password>` 换成真实密码）。
+2. **部署后端**：把 [twikoojs/twikoo-netlify](https://github.com/twikoojs/twikoo-netlify) fork 到自己账号 → 登录 [Netlify](https://www.netlify.com) → Add new site → Import an existing project → Deploy with GitHub → 选刚 fork 的仓库 → Add environment variables 加 `MONGODB_URI` = 连接串 → Deploy。
+3. **确认成功**：打开站点链接（可在 Domain settings → Edit site name 改名），看到「Twikoo 云函数运行正常」即成功。本站后端：`https://chaserspaces.netlify.app/.netlify/functions/twikoo`。
+4. **启用树洞**：把「站点域名 + `/.netlify/functions/twikoo`」填入 `content/projects.json` 的 `site.twikoo.envId`（注意是函数地址，不是网站首页），`enabled` 改为 `true`，运行 `python3 build.py` 并推送。
+5. **管理留言**：在 Netlify 的 Site configuration → Environment variables 里加 `TK_PASSWORD` = 管理密码并重新 Deploy；之后在树洞评论区点齿轮图标、输入该密码，即可管理/删除留言。
+
+需要知道的事：
+
+- **免费额度**：每月 125,000 次请求 + 100 小时函数时长，个人博客完全够用。
+- 前端组件从 jsdelivr CDN 加载，国内偶尔偏慢，刷新即可。
+
+### 方式 B：Vercel
+
+用 GitHub 账号登录 [vercel.com](https://vercel.com) → New Project → Import 仓库 `https://github.com/imaegoo/twikoo` → Deploy；在 Settings → Environment Variables 加 `MONGODB_URI`（同上）→ Redeploy；把 `https://twikoo-xxx.vercel.app` 填入 `site.twikoo.envId` 并启用。⚠️ `*.vercel.app` 在部分大陆网络下无法访问，介意的话给 Vercel 项目绑自己的域名。
+
+> Hugging Face 曾经免费且大陆访问快，但 2026 年 7 月起新免费账号的 Docker Space 已改为付费，不再推荐。
+
+官方文档：[后端部署（含各平台对比）](https://twikoo.js.org/backend.html) · [前端引入](https://twikoo.js.org/frontend.html) · [MongoDB Atlas 配置](https://twikoo.js.org/mongodb-atlas.html)
 
 ## 场景四：配置个人主页链接（首页）
 

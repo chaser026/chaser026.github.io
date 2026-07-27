@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="chaser026 的技术项目、学习文档与近期所想。">
+  <meta name="description" content="chaser026 的技术项目、学习笔记，和一个谁都可以说话的公开树洞。">
   <title>小C的工作台</title>
   <link rel="stylesheet" href="assets/styles.css">
 </head>
@@ -15,8 +15,7 @@
     </a>
     <nav class="main-nav" aria-label="主导航">
       <a href="#projects">项目</a>
-      <a href="#thoughts">近期所想</a>
-      <a href="#about">关于</a>
+      <a href="treehole.html">树洞</a>
     </nav>
     <a class="github-link" data-github href="https://github.com/chaser026" target="_blank" rel="noreferrer">github ↗</a>
   </header>
@@ -29,18 +28,17 @@
         <p class="hero-lede">这里是我的个人空间：记录学习的项目，也作为朋友圈发一下最近所想，记录成长。</p>
         <div class="hero-actions" id="social-links"></div>
       </div>
-      <aside class="hero-note">
-        <span class="note-label">now thinking</span>
-        <p data-hero-thought>怎样把复杂的模型系统，讲成别人可以真正拿去使用的知识。</p>
-        <span class="note-date">持续更新中 · 2026</span>
+      <aside class="hero-hole">
+        <i class="hole-firefly" aria-hidden="true"></i>
+        <span class="hole-label">tree hollow</span>
+        <p>有些话不适合发朋友圈，<br>但可以说给树听。</p>
+        <a class="hole-go" href="treehole.html">去树洞留一句 →</a>
       </aside>
     </section>
 
     <section class="stats shell" aria-label="站点概况">
       <div><strong id="doc-count">0</strong><span>篇文档</span></div>
       <div><strong id="project-count">0</strong><span>个项目</span></div>
-    
-      <div class="stats-caption">从底层组件到对齐训练<br>按项目组织，持续积累。</div>
     </section>
 
     <section id="projects" class="section shell">
@@ -52,13 +50,37 @@
       <div id="empty-state" class="empty-state" hidden>还没有项目。在 content/ 添加内容后运行 build.py 即可。</div>
     </section>
 
-    <section id="thoughts" class="section thoughts-band">
-      <div class="shell">
-        <div class="section-heading thoughts-heading">
-          <div><p class="eyebrow">02 / recent thoughts</p><h2>近期所想</h2></div>
-          <a class="thoughts-more" href="thoughts.html">查看全部 →</a>
+    <section class="hole-band">
+      <div class="hole-band-fireflies" id="hole-band-fireflies" aria-hidden="true"></div>
+      <div class="shell hole-band-inner">
+        <div class="hole-band-copy">
+          <p class="eyebrow hole-eyebrow">02 / tree hollow</p>
+          <h2>树洞</h2>
+          <p class="hole-line">今晚，想说点什么？</p>
+          <p class="hole-sub">不用注册、不用登录，起个名字就能留一句话；也可以什么都不说，只是来听听路人的回声。</p>
+          <a class="button hole-band-button" href="treehole.html">去树洞说说话 <span>→</span></a>
         </div>
-        <div id="thoughts-preview" class="thoughts-preview"></div>
+        <svg class="hole-band-tree" viewBox="0 0 420 560" aria-hidden="true">
+          <defs>
+            <radialGradient id="bandGlow" cx="50%" cy="45%" r="65%">
+              <stop offset="0%" stop-color="#ffedbe"/>
+              <stop offset="38%" stop-color="#f2c96b"/>
+              <stop offset="100%" stop-color="rgba(242,201,107,0)"/>
+            </radialGradient>
+          </defs>
+          <g fill="#04120a">
+            <path d="M186 560 C192 470 174 424 188 352 C196 310 178 296 190 246 L222 248 C226 300 216 336 226 392 C236 452 228 506 242 560 Z"/>
+            <path d="M196 296 C156 262 132 246 98 230" stroke="#04120a" stroke-width="17" fill="none" stroke-linecap="round"/>
+            <path d="M216 276 C258 250 288 240 330 218" stroke="#04120a" stroke-width="15" fill="none" stroke-linecap="round"/>
+            <circle cx="116" cy="192" r="72"/>
+            <circle cx="212" cy="136" r="90"/>
+            <circle cx="306" cy="190" r="68"/>
+            <circle cx="158" cy="112" r="58"/>
+            <circle cx="272" cy="104" r="54"/>
+          </g>
+          <ellipse class="hollow" cx="207" cy="438" rx="36" ry="50" fill="url(#bandGlow)" opacity=".85"/>
+          <ellipse cx="207" cy="438" rx="14" ry="23" fill="#071308"/>
+        </svg>
       </div>
     </section>
 

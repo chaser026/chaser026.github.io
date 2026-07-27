@@ -1,0 +1,113 @@
+/* ==== 树洞页：夜里的森林 ==== */
+.hole-page{background:#07130d;color:#e9f2ea}
+
+/* 头部暗色化 */
+.hole-page .site-header{background:rgba(7,19,13,.85);border-bottom-color:rgba(233,242,234,.08)}
+.hole-page .brand strong{color:#eef5ee}
+.hole-page .brand small{color:#8fae9b}
+.hole-page .main-nav a{color:#9db8a7}
+.hole-page .main-nav a:hover,.hole-page .main-nav a.nav-active{color:#f2c96b}
+.hole-page .github-link{color:#f2c96b;border-bottom-color:rgba(242,201,107,.55)}
+.hole-page .github-link:hover{color:#ffd98a}
+
+/* 开场夜景 */
+.forest{position:relative;min-height:calc(100vh - 78px);display:flex;align-items:center;overflow:hidden;padding:90px 0 190px}
+.sky{position:absolute;inset:0;background:
+  radial-gradient(1100px 620px at 80% -12%,rgba(242,201,107,.13),transparent 62%),
+  radial-gradient(900px 520px at 4% 112%,rgba(31,107,82,.28),transparent 66%),
+  linear-gradient(180deg,#0a1811 0%,#0c1e15 46%,#081510 100%)}
+.sky::after{content:"";position:absolute;inset:0;background-image:
+  radial-gradient(1.6px 1.6px at 12% 24%,rgba(255,255,255,.5),transparent),
+  radial-gradient(1px 1px at 30% 10%,rgba(255,255,255,.42),transparent),
+  radial-gradient(1.4px 1.4px at 47% 32%,rgba(255,255,255,.3),transparent),
+  radial-gradient(1px 1px at 61% 7%,rgba(255,255,255,.46),transparent),
+  radial-gradient(1.2px 1.2px at 74% 18%,rgba(255,255,255,.28),transparent),
+  radial-gradient(1px 1px at 90% 34%,rgba(255,255,255,.34),transparent)}
+.moon{position:absolute;top:10%;right:13%;width:94px;height:94px;border-radius:50%;
+  background:radial-gradient(circle at 38% 36%,#fdf3d8,#f2c96b 60%,rgba(242,201,107,0) 75%);
+  box-shadow:0 0 70px 26px rgba(242,201,107,.15);animation:moon-breathe 7s ease-in-out infinite;will-change:transform}
+@keyframes moon-breathe{50%{box-shadow:0 0 95px 34px rgba(242,201,107,.22)}}
+.fireflies{position:absolute;inset:0;pointer-events:none}
+.tree{position:absolute;bottom:-4px;pointer-events:none;will-change:transform}
+.tree-far{right:33%;width:200px}
+.tree-near{right:1%;width:min(400px,44vw)}
+.ground{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,transparent,#050d09 58%)}
+
+/* 开场文案（左对齐，不居中） */
+.forest-copy{position:relative;z-index:2;max-width:620px}
+.hole-page h1{font:500 clamp(40px,6.2vw,76px)/1.14 Georgia,"Songti SC",serif;letter-spacing:-.03em;margin:0 0 30px;color:#f4f8f3}
+.hole-page h1 em{color:#f2c96b;font-style:normal}
+.forest-lede{color:#b9d2c1;font-size:16px;line-height:1.95;max-width:540px;margin:0 0 40px}
+.forest-actions{display:flex;gap:14px;flex-wrap:wrap}
+.hole-button{gap:10px;background:#f2c96b;border-color:#f2c96b;color:#182719;font-weight:600}
+.hole-button:hover{background:#ffd98a;border-color:#ffd98a;transform:translateY(-2px)}
+.hole-button span{display:inline-block;transition:transform .2s}
+.hole-button:hover span{transform:translateY(3px)}
+.hole-button-quiet{gap:10px;border-color:rgba(242,201,107,.5);color:#f2c96b}
+.hole-button-quiet:hover{background:rgba(242,201,107,.12)}
+.hole-button-quiet span{display:inline-block;transition:transform .2s}
+.hole-button-quiet:hover span{transform:translateX(4px)}
+
+/* 回声墙 */
+.wall{position:relative;padding:105px 0 84px;background:#0a1a12;border-top:1px solid rgba(242,201,107,.14)}
+.hole-page h2{font:500 42px/1.1 Georgia,"Songti SC",serif;color:#f4f8f3;margin:0}
+.hole-page .section-heading{align-items:end}
+.hole-page .section-intro{color:#9db8a7}
+.twikoo-frame{position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(242,201,107,.2);border-radius:16px;padding:36px clamp(18px,4vw,50px);box-shadow:0 30px 90px rgba(0,0,0,.38);overflow:hidden}
+.twikoo-frame::before{content:"";position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(242,201,107,.55),transparent)}
+.wall-note{margin:22px 4px 0;color:#7d9787;font-size:12px}
+
+/* Twikoo 深色化 */
+.twikoo{color:#d7e5da}
+.twikoo a{color:#f2c96b}
+.twikoo input,.twikoo textarea{color:#eef5ee;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.16)}
+.twikoo input::placeholder,.twikoo textarea::placeholder{color:#74907f}
+.twikoo input:focus,.twikoo textarea:focus{border-color:rgba(242,201,107,.55)}
+.twikoo .tk-row{border-top:1px solid rgba(255,255,255,.08)}
+.twikoo .tk-content{color:#d7e5da}
+.twikoo .tk-nick{color:#f2c96b!important}
+.twikoo .tk-time,.twikoo .tk-extras,.twikoo .tk-meta{color:#7d9787!important}
+.twikoo .tk-action .tk-action-link{color:#9db8a7}
+.twikoo .tk-action .tk-action-link .tk-action-count{color:#9db8a7}
+.twikoo .tk-submit{background:#1f6b52!important;border-color:#1f6b52!important;color:#fff!important}
+.twikoo .tk-submit:hover{background:#2a8266!important;border-color:#2a8266!important}
+.twikoo pre{background:#0c211a!important;border-radius:8px}
+.twikoo code{color:#f2c96b}
+.twikoo .tk-pagination .tk-page{color:#9db8a7;border-color:rgba(255,255,255,.15)}
+
+/* 未配置时的提示 */
+.hole-hint{padding:44px 10px;text-align:center}
+.hole-hint h3{font:500 26px/1.4 Georgia,"Songti SC",serif;color:#f2c96b;margin:0 0 16px}
+.hole-hint p{color:#b9d2c1;font-size:14px;margin:0 0 8px}
+.hole-hint code{background:rgba(242,201,107,.14);color:#ffd98a;padding:2px 7px;border-radius:5px;font-size:12px}
+
+/* 树洞约定 */
+.promise{padding:44px 0 116px;background:#0a1a12}
+.promise h2{margin-top:16px}
+.promise-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+.promise-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:28px 24px;transition:transform .2s,border-color .2s,box-shadow .2s}
+.promise-card:hover{transform:translateY(-4px);border-color:rgba(242,201,107,.4);box-shadow:0 22px 55px rgba(0,0,0,.32)}
+.promise-no{display:block;font:italic 40px Georgia,serif;color:rgba(242,201,107,.4);line-height:1}
+.promise-card h3{font:500 20px/1.3 Georgia,"Songti SC",serif;color:#f4f8f3;margin:14px 0 10px}
+.promise-card p{color:#9db8a7;font-size:13px;line-height:1.85;margin:0}
+.dark-footer{border-top-color:rgba(255,255,255,.09);color:#74907f}
+
+/* 滚动渐显 */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:800px){
+  .forest{padding:60px 0 150px;min-height:600px}
+  .tree-far{display:none}
+  .tree-near{right:-84px;width:320px;opacity:.85}
+  .moon{width:62px;height:62px;top:7%;right:7%}
+  .wall{padding:76px 0 56px}
+  .twikoo-frame{padding:26px 16px}
+  .promise{padding:28px 0 84px}
+  .promise-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+  .moon,.hollow{animation:none!important}
+  .tree{will-change:auto}
+}
