@@ -66,33 +66,29 @@
 
       <div class="ground" aria-hidden="true"></div>
 
-      <div class="shell forest-copy reveal">
-        <p class="eyebrow hole-eyebrow">tree hollow / 匿名 · 公开 · 免费</p>
-        <h1>有些话，<br><em>说给树听就好。</em></h1>
-        <p class="forest-lede">这是一棵谁都可以靠近的树。不用注册，不用登录，起个名字，把想说的留下——碎碎念、小委屈、没说出口的开心，山风和萤火都会替你收着。</p>
-        <div class="forest-actions">
-          <a class="button hole-button" href="#wall">留下一句 <span>↓</span></a>
-          <a class="button hole-button-quiet" href="#wall">先听听回声 <span>→</span></a>
+      <div class="shell forest-grid">
+        <div class="forest-copy reveal">
+          <p class="eyebrow hole-eyebrow">tree hollow / 匿名 · 公开 · 免费</p>
+          <h1>有些话，<br><em>说给树听就好。</em></h1>
+          <p class="forest-lede">这是一棵谁都可以靠近的树。不用注册，不用登录，起个名字，把想说的留下——碎碎念、小委屈、没说出口的开心，山风和萤火都会替你收着。</p>
+          <div class="forest-actions">
+            <a class="button hole-button" href="#hole-composer">留下一句 <span>↓</span></a>
+            <a class="button hole-button-quiet" href="#promise">树洞约定 <span>→</span></a>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- 回声墙 -->
-    <section id="wall" class="wall">
-      <div class="shell">
-        <div class="section-heading reveal">
-          <div><p class="eyebrow hole-eyebrow">echoes / 树洞回声</p><h2>回声墙</h2></div>
-          <p class="section-intro">说出的每一句，都会在这里亮起来。你可以小声，也可以尽情；说完记得看一眼下面的约定。</p>
-        </div>
-        <div class="twikoo-frame reveal">
+        <div class="twikoo-frame reveal" id="hole-composer">
+          <div class="frame-head">
+            <p class="eyebrow hole-eyebrow">echoes / 回声墙</p>
+            <p class="frame-hint">说出的每一句，都会在这里亮起来</p>
+          </div>
           <div id="twikoo"></div>
+          <p class="wall-note">发言会显示你填的昵称；不想被认出，就随便起一个。垃圾留言会被树洞主人悄悄扫掉。</p>
         </div>
-        <p class="wall-note reveal">发言会显示你填的昵称；不想被认出，就随便起一个。垃圾留言会被树洞主人悄悄扫掉。</p>
       </div>
     </section>
 
     <!-- 树洞约定 -->
-    <section class="promise">
+    <section class="promise" id="promise">
       <div class="shell">
         <div class="reveal">
           <p class="eyebrow hole-eyebrow">promises / 树洞约定</p>

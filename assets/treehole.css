@@ -11,7 +11,7 @@
 .hole-page .github-link:hover{color:#ffd98a}
 
 /* 开场夜景 */
-.forest{position:relative;min-height:calc(100vh - 78px);display:flex;align-items:center;overflow:hidden;padding:90px 0 190px}
+.forest{position:relative;min-height:calc(100vh - 78px);display:flex;align-items:center;overflow:hidden;padding:80px 0 140px}
 .sky{position:absolute;inset:0;background:
   radial-gradient(1100px 620px at 80% -12%,rgba(242,201,107,.13),transparent 62%),
   radial-gradient(900px 520px at 4% 112%,rgba(31,107,82,.28),transparent 66%),
@@ -34,7 +34,8 @@
 .ground{position:absolute;left:0;right:0;bottom:0;height:130px;background:linear-gradient(180deg,transparent,#050d09 58%)}
 
 /* 开场文案（左对齐，不居中） */
-.forest-copy{position:relative;z-index:2;max-width:620px}
+.forest-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:start}
+.forest-copy{max-width:620px}
 .hole-page h1{font:500 clamp(40px,6.2vw,76px)/1.14 Georgia,"Songti SC",serif;letter-spacing:-.03em;margin:0 0 30px;color:#f4f8f3}
 .hole-page h1 em{color:#f2c96b;font-style:normal}
 .forest-lede{color:#b9d2c1;font-size:16px;line-height:1.95;max-width:540px;margin:0 0 40px}
@@ -48,14 +49,16 @@
 .hole-button-quiet span{display:inline-block;transition:transform .2s}
 .hole-button-quiet:hover span{transform:translateX(4px)}
 
-/* 回声墙 */
-.wall{position:relative;padding:105px 0 84px;background:#0a1a12;border-top:1px solid rgba(242,201,107,.14)}
+/* 回声墙（嵌在开场夜景右侧，首屏即可发言） */
 .hole-page h2{font:500 42px/1.1 Georgia,"Songti SC",serif;color:#f4f8f3;margin:0}
-.hole-page .section-heading{align-items:end}
-.hole-page .section-intro{color:#9db8a7}
-.twikoo-frame{position:relative;background:rgba(255,255,255,.03);border:1px solid rgba(242,201,107,.2);border-radius:16px;padding:36px clamp(18px,4vw,50px);box-shadow:0 30px 90px rgba(0,0,0,.38);overflow:hidden}
+.twikoo-frame{position:relative;background:rgba(10,26,18,.78);border:1px solid rgba(242,201,107,.22);border-radius:16px;padding:26px clamp(18px,3vw,32px);box-shadow:0 30px 90px rgba(0,0,0,.45);overflow:hidden;backdrop-filter:blur(6px);transition:border-color .25s,box-shadow .25s;scroll-margin-top:96px}
+.twikoo-frame:hover{border-color:rgba(242,201,107,.38)}
+.twikoo-frame:focus-within{border-color:rgba(242,201,107,.6);box-shadow:0 30px 90px rgba(0,0,0,.45),0 0 44px rgba(242,201,107,.14)}
 .twikoo-frame::before{content:"";position:absolute;top:0;left:8%;right:8%;height:1px;background:linear-gradient(90deg,transparent,rgba(242,201,107,.55),transparent)}
-.wall-note{margin:22px 4px 0;color:#7d9787;font-size:12px}
+.frame-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(242,201,107,.16)}
+.frame-head .eyebrow{margin:0}
+.frame-hint{color:#8fae9b;font-size:12px;margin:0;text-align:right}
+.wall-note{margin:18px 0 0;padding-top:14px;border-top:1px dashed rgba(255,255,255,.12);color:#7d9787;font-size:12px}
 
 /* Twikoo 深色化 */
 .twikoo{color:#d7e5da}
@@ -97,9 +100,10 @@
 .reveal.in{opacity:1;transform:none}
 
 @media(max-width:800px){
-  .forest{padding:60px 0 150px;min-height:600px}
+  .forest{padding:56px 0 110px;min-height:auto}
+  .forest-grid{grid-template-columns:1fr;gap:38px}
   .tree-far{display:none}
-  .tree-near{right:-84px;width:320px;opacity:.85}
+  .tree-near{right:-84px;width:320px;opacity:.55}
   .moon{width:62px;height:62px;top:7%;right:7%}
   .wall{padding:76px 0 56px}
   .twikoo-frame{padding:26px 16px}
