@@ -107,42 +107,22 @@ if (!item) {
     bar.style.width = max > 0 ? `${Math.min(100, (window.scrollY / max) * 100)}%` : '100%';
   });
 
-  // Comments (giscus, 基于 GitHub Discussions)
-  mountComments(item);
+  // Comments (Twikoo)
+  mountComments();
 }
 
-function mountComments(doc) {
-  const g = (site.site && site.site.giscus) || {};
+function mountComments() {
   const article = document.querySelector('.reader-content');
-  if (!article) return;
+  if (!article || !window.twikoo) return;
 
   const section = document.createElement('section');
   section.className = 'comments-section';
-  section.innerHTML = '<h2 class="comments-title">评论</h2>';
-
-  if (!g.enabled || /填入|生成后/.test(`${g.repoId} ${g.categoryId}`)) {
-    section.insertAdjacentHTML('beforeend',
-      '<p class="comments-hint">评论功能尚未配置。请在 <code>content/projects.json</code> 的 <code>site.giscus</code> 中填写 giscus 参数并将 <code>enabled</code> 设为 <code>true</code>，具体步骤见 GUIDE.md。</p>');
-    article.after(section);
-    return;
-  }
-
-  const script = document.createElement('script');
-  script.src = 'https://giscus.app/client.js';
-  script.async = true;
-  script.crossOrigin = 'anonymous';
-  script.setAttribute('data-repo', g.repo);
-  script.setAttribute('data-repo-id', g.repoId);
-  script.setAttribute('data-category', g.category || 'Announcements');
-  script.setAttribute('data-category-id', g.categoryId);
-  script.setAttribute('data-mapping', g.mapping || 'pathname');
-  script.setAttribute('data-strict', '0');
-  script.setAttribute('data-reactions-enabled', '1');
-  script.setAttribute('data-emit-metadata', '0');
-  script.setAttribute('data-input-position', 'top');
-  script.setAttribute('data-theme', g.theme || 'light');
-  script.setAttribute('data-lang', g.lang || 'zh-CN');
-  script.setAttribute('data-loading', 'lazy');
-  section.appendChild(script);
+  section.innerHTML = '<h2 class="comments-title">评论</h2><div id="tcomment"></div>';
   article.after(section);
+
+  twikoo.init({
+    envId: 'https://chaserspaces.netlify.app/.netlify/functions/twikoo',
+    el: '#tcomment',
+    lang: 'zh-CN',
+  });
 }
