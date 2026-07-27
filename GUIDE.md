@@ -120,7 +120,7 @@ python3 build.py && git add -A && git commit -m "更新内容" && git push origi
 2. **部署后端**：把 [twikoojs/twikoo-netlify](https://github.com/twikoojs/twikoo-netlify) fork 到自己账号 → 登录 [Netlify](https://www.netlify.com) → Add new site → Import an existing project → Deploy with GitHub → 选刚 fork 的仓库 → Add environment variables 加 `MONGODB_URI` = 连接串 → Deploy。
 3. **确认成功**：打开站点链接（可在 Domain settings → Edit site name 改名），看到「Twikoo 云函数运行正常」即成功。本站后端：`https://chaserspaces.netlify.app/.netlify/functions/twikoo`。
 4. **启用树洞**：把「站点域名 + `/.netlify/functions/twikoo`」填入 `content/projects.json` 的 `site.twikoo.envId`（注意是函数地址，不是网站首页），`enabled` 改为 `true`，运行 `python3 build.py` 并推送。
-5. **管理留言**：在 Netlify 的 Site configuration → Environment variables 里加 `TK_PASSWORD` = 管理密码并重新 Deploy；之后在树洞评论区点齿轮图标、输入该密码，即可管理/删除留言。
+5. **管理留言**：打开树洞页，点评论区的**齿轮图标** → 首次会引导「设置管理密码」，直接输入密码即可（密码加密存入 MongoDB，**不需要**在 Netlify 加环境变量）。之后管理/删除留言都从同一个齿轮图标登录。忘记密码的话：去 MongoDB Atlas 的 `config` 表删掉 `ADMIN_PASS` 这条配置，再回齿轮处重设。
 
 需要知道的事：
 
