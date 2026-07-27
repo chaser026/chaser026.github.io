@@ -1,4 +1,7 @@
-/* 树洞页：萤火、视差、滚动渐显、Twikoo 挂载 */
+/* 树洞页：萤火、视差、滚动渐显、Twikoo 挂载
+ * IIFE 包裹：twikoo.min.js 组件会在顶层泄漏全局变量 var e/t，
+ * 若本文件在顶层声明 const t 会触发 "Identifier 't' has already been declared"，导致整段脚本失效。 */
+(function () {
 const site = window.SITE || { site: {} };
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -65,7 +68,8 @@ if (mount) {
     mount.innerHTML = `
       <div class="hole-hint">
         <h3>回声暂时听不到</h3>
-        <p>评论组件（jsdelivr CDN）加载失败，多半是网络波动，刷新页面试试。</p>
+        <p>评论组件加载失败，多半是网络波动，刷新页面试试。</p>
       </div>`;
   }
 }
+})();
