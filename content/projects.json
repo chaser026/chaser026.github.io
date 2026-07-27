@@ -9,16 +9,6 @@
       "bilibili": "https://space.bilibili.com/488678545",
       "xiaohongshu": "https://www.xiaohongshu.com/user/profile/5eb672450000000001001f5b"
     },
-    "giscus": {
-      "enabled": false,
-      "repo": "chaser026/chaser026.github.io",
-      "repoId": "在 giscus.app 生成后填入",
-      "category": "Announcements",
-      "categoryId": "在 giscus.app 生成后填入",
-      "mapping": "pathname",
-      "theme": "light",
-      "lang": "zh-CN"
-    },
     "twikoo": {
       "enabled": true,
       "envId": "https://chaserspaces.netlify.app/.netlify/functions/twikoo",

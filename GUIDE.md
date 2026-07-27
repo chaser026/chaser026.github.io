@@ -154,30 +154,9 @@ python3 build.py && git add -A && git commit -m "更新内容" && git push origi
 
 这些链接显示在首页 hero 区（原「浏览项目 / 查看 github」按钮的位置）。对应的 HTML 容器是 `index.html` 中的 `<div class="hero-actions" id="social-links"></div>`，由 `assets/app.js` 填充。
 
-## 场景五：开启评论功能（giscus）
+## 场景五：文档评论（已统一到 Twikoo）
 
-评论基于 GitHub Discussions，用 [giscus](https://giscus.app) 实现，显示在每篇文档底部。开启步骤：
-
-1. 在 GitHub 仓库 `Settings → General → Features` 勾选 **Discussions**；
-2. 打开 https://github.com/apps/giscus ，点 **Install**，授权给 `chaser026.github.io` 仓库；
-3. 打开 https://giscus.app ，在「仓库」填 `chaser026/chaser026.github.io`，选择映射方式 `pathname`，选一个 Discussion 分类（推荐 `Announcements`）；
-4. 页面下方会生成一段配置，把其中的 `data-repo-id` 和 `data-category-id` 复制出来；
-5. 填入 `content/projects.json` 的 `site.giscus`，并把 `enabled` 改成 `true`：
-
-   ```json
-   "giscus": {
-     "enabled": true,
-     "repo": "chaser026/chaser026.github.io",
-     "repoId": "R_kgD...",
-     "category": "Announcements",
-     "categoryId": "DIC_kwD...",
-     "mapping": "pathname",
-     "theme": "light",
-     "lang": "zh-CN"
-   }
-   ```
-
-6. 运行 `python3 build.py` 并推送。未配置前，文档底部会显示一条「评论功能尚未配置」的提示，不影响其他功能。
+每篇文档底部的评论与树洞共用同一个 Twikoo 后端（`site.twikoo`），**无需额外配置**——树洞启用后（场景三），文档评论自动可用，每篇文档按 URL 自动对应独立的评论区。未配置时文档底部会显示「评论功能尚未配置」提示，不影响阅读。
 
 ## 常见问题
 

@@ -113,16 +113,26 @@ if (!item) {
 
 function mountComments() {
   const article = document.querySelector('.reader-content');
-  if (!article || !window.twikoo) return;
+  if (!article) return;
 
   const section = document.createElement('section');
   section.className = 'comments-section';
-  section.innerHTML = '<h2 class="comments-title">评论</h2><div id="tcomment"></div>';
+  section.innerHTML = '<h2 class="comments-title">评论</h2>';
   article.after(section);
 
-  twikoo.init({
-    envId: 'https://chaserspaces.netlify.app/.netlify/functions/twikoo',
-    el: '#tcomment',
-    lang: 'zh-CN',
-  });
+  const t = (site.site && site.site.twikoo) || {};
+  if (!t.enabled || /填入|部署后/.test(t.envId || '')) {
+    section.insertAdjacentHTML('beforeend',
+      '<p class="comments-hint">评论功能尚未配置：在 <code>content/projects.json</code> 的 <code>site.twikoo</code> 中填入后端地址并将 <code>enabled</code> 设为 <code>true</code>，步骤见 GUIDE.md 场景三。</p>');
+    return;
+  }
+  if (!window.twikoo) {
+    section.insertAdjacentHTML('beforeend',
+      '<p class="comments-hint">评论组件加载失败（CDN 网络波动），刷新页面试试。</p>');
+    return;
+  }
+  section.insertAdjacentHTML('beforeend', '<div id="tcomment"></div>');
+  const opt = { envId: t.envId, el: '#tcomment', lang: t.lang || 'zh-CN', path: 'reader' + location.search };
+  if (t.region) opt.region = t.region;
+  twikoo.init(opt);
 }
