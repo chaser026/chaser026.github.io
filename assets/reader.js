@@ -123,7 +123,7 @@ function mountComments() {
   const t = (site.site && site.site.twikoo) || {};
   if (!t.enabled || /填入|部署后/.test(t.envId || '')) {
     section.insertAdjacentHTML('beforeend',
-      '<p class="comments-hint">评论功能尚未配置：在 <code>content/projects.json</code> 的 <code>site.twikoo</code> 中填入后端地址并将 <code>enabled</code> 设为 <code>true</code>，步骤见 GUIDE.md 场景三。</p>');
+      '<p class="comments-hint">评论功能尚未配置：在 <code>content/projects.json</code> 的 <code>site.twikoo</code> 中填入后端地址并将 <code>enabled</code> 设为 <code>true</code>。</p>');
     return;
   }
   if (!window.twikoo) {

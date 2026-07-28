@@ -4,20 +4,5 @@
 
 - 首页以项目为粒度展示，进入项目后按作业 / 模块 / 章节浏览文档
 - 文档用 Markdown 维护，支持多级标题、表格、代码高亮、LaTeX 公式和飞书风格提示块
-- 树洞：基于 Twikoo 的匿名公开留言墙，访客起个昵称即可发言（启用方法见 GUIDE.md 场景三）
-
-## 快速使用
-
-```bash
-python3 -m http.server 8000   # 本地预览 http://localhost:8000
-python3 build.py              # 修改 content/ 后重新生成 data/site.js
-```
-
-## 如何维护
-
-所有内容都在 `content/` 目录，编辑后运行 `python3 build.py` 即可。新增文档、新建项目、启用树洞的完整步骤见 [GUIDE.md](GUIDE.md)。
-
-## 部署
-
-仓库 `chaser026.github.io`，`main` 分支根目录，GitHub Pages 选择 `Deploy from a branch → main → / (root)`。
+- 树洞：基于 Twikoo 的匿名公开留言墙，访客起个昵称即可发言
 

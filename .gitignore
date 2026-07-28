@@ -10,3 +10,7 @@ data/documents.js
 
 # 私人知识库原始文档 —— 绝不上传到 GitHub
 md知识库/
+
+# 内部资料（转换脚本含密钥、维护文档）—— 绝不上传到 GitHub
+src/
+GUIDE.md

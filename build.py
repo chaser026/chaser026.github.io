@@ -6,7 +6,7 @@
 用法：
     python3 build.py
 
-内容组织约定（详见 GUIDE.md）：
+内容组织约定：
     content/projects.json                     站点与项目元信息
     content/projects/<项目id>/<...>/<文档>.md  项目文档，目录层级自动成为导航层级
 """

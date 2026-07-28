@@ -56,7 +56,7 @@ if (mount) {
     mount.innerHTML = `
       <div class="hole-hint">
         <h3>树洞还没凿开</h3>
-        <p>只差几步：按 GUIDE.md「场景三」在 Vercel 免费部署 Twikoo 后端，</p>
+        <p>只差几步：完成 Twikoo 后端部署后，</p>
         <p>把部署域名填进 <code>content/projects.json</code> 的 <code>site.twikoo.envId</code>，</p>
         <p>并将 <code>enabled</code> 改为 <code>true</code>，运行 <code>python3 build.py</code> 后推送即可。</p>
       </div>`;

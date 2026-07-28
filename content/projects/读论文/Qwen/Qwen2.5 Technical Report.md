@@ -1,50 +1,44 @@
-# Qwen2\.5 Technical Report
+# Qwen2.5 Technical Report
 
-通过网盘分享的文件：qwen2\.5技术报告\.mp4
+通过网盘分享的文件：qwen2.5技术报告.mp4
 
-链接: https://pan\.baidu\.com/s/1amASUdmDAow74IlnPMXg3A?pwd=cbz5 提取码: cbz5
+链接: https://pan.baidu.com/s/1amASUdmDAow74IlnPMXg3A?pwd=cbz5 提取码: cbz5
 
 ## 摘要（Abstract）
 
-Qwen2\.5 是一个全面的大语言模型系列，在预训练和后训练阶段均有显著改进。预训练数据从 Qwen2 的 7 万亿 token 扩展至 **18 万亿 token**，为常识、专家知识和推理能力奠定了坚实基础。后训练方面，采用了超过 **100 万样本**的精细化监督微调（SFT），以及包含离线 DPO 和在线 GRPO 的**多阶段强化学习**，显著提升了人类偏好对齐、长文本生成、结构化数据分析和指令遵循能力。
+Qwen2.5 是一个全面的大语言模型系列，在预训练和后训练阶段均有显著改进。预训练数据从 Qwen2 的 7 万亿 token 扩展至 **18 万亿 token**，为常识、专家知识和推理能力奠定了坚实基础。后训练方面，采用了超过 **100 万样本**的精细化监督微调（SFT），以及包含离线 DPO 和在线 GRPO 的**多阶段强化学习**，显著提升了人类偏好对齐、长文本生成、结构化数据分析和指令遵循能力。
 
-开源模型涵盖 0\.5B、1\.5B、3B、7B、14B、32B 和 72B 共 7 种规模的基础模型和指令微调模型。专有模型包括两个 MoE 变体：Qwen2\.5\-Turbo 和 Qwen2\.5\-Plus。旗舰模型 Qwen2\.5\-72B\-Instruct 性能可与约 5 倍大小的 Llama\-3\-405B\-Instruct 竞争。Qwen2\.5\-Turbo 和 Qwen2\.5\-Plus 分别对标 GPT\-4o\-mini 和 GPT\-4o，具有优越的性价比。Qwen2\.5 还作为基础支撑了 Qwen2\.5\-Math、Qwen2\.5\-Coder、QwQ 等专门模型的训练。
+开源模型涵盖 0.5B、1.5B、3B、7B、14B、32B 和 72B 共 7 种规模的基础模型和指令微调模型。专有模型包括两个 MoE 变体：Qwen2.5-Turbo 和 Qwen2.5-Plus。旗舰模型 Qwen2.5-72B-Instruct 性能可与约 5 倍大小的 Llama-3-405B-Instruct 竞争。Qwen2.5-Turbo 和 Qwen2.5-Plus 分别对标 GPT-4o-mini 和 GPT-4o，具有优越的性价比。Qwen2.5 还作为基础支撑了 Qwen2.5-Math、Qwen2.5-Coder、QwQ 等专门模型的训练。
 
 ---
 
 ## 1 引言（Introduction）
 
-大语言模型的快速发展使 AGI 的曙光日益显现。模型与数据规模的持续进步，结合大规模预训练 \+ SFT \+ RLHF 的范式，使 LLM 具备了语言理解、生成和推理的涌现能力。推理时间缩放（如 o1）的突破进一步增强了 LLM 的深度推理能力。
+大语言模型的快速发展使 AGI 的曙光日益显现。模型与数据规模的持续进步，结合大规模预训练 + SFT + RLHF 的范式，使 LLM 具备了语言理解、生成和推理的涌现能力。推理时间缩放（如 o1）的突破进一步增强了 LLM 的深度推理能力。
 
-Qwen2\.5 的关键特性：
+Qwen2.5 的关键特性：
 
-- **Better in Size**：相比 Qwen2，新增 3B、14B 和 32B 模型，填补了资源受限场景下的空白。Qwen2\.5\-Turbo 和 Qwen2\.5\-Plus 在精度、延迟和成本之间实现了优秀平衡。
-
+- **Better in Size**：相比 Qwen2，新增 3B、14B 和 32B 模型，填补了资源受限场景下的空白。Qwen2.5-Turbo 和 Qwen2.5-Plus 在精度、延迟和成本之间实现了优秀平衡。
 - **Better in Data**：预训练数据从 7T 增至 18T token，聚焦知识、编程和数学。后训练数据达 100 万样本，涵盖 SFT、DPO 和 GRPO 阶段。预训练采用分阶段策略以适应不同数据混合比例。
-
-- **Better in Use**：消除了 Qwen2 的多项关键限制——生成长度从 2K 提升至 8K token，更好支持结构化输入/输出（表格、JSON），更易于工具调用。Qwen2\.5\-Turbo 支持最高 100 万 token 的上下文长度。
+- **Better in Use**：消除了 Qwen2 的多项关键限制——生成长度从 2K 提升至 8K token，更好支持结构化输入/输出（表格、JSON），更易于工具调用。Qwen2.5-Turbo 支持最高 100 万 token 的上下文长度。
 
 ---
 
-## 2 架构与分词器（Architecture \& Tokenizer）
+## 2 架构与分词器（Architecture & Tokenizer）
 
 ### 稠密模型架构
 
 沿用 Qwen2 的 Transformer 解码器架构，关键组件包括：
 
 - **分组查询注意力（GQA）**：高效利用 KV 缓存
-
 - **SwiGLU** 激活函数
-
 - **RoPE** 旋转位置编码
-
 - **QKV bias** 注意力机制
-
 - **RMSNorm** 预归一化
 
 ### MoE 模型架构
 
-在稠密模型基础上，将标准 FFN 层替换为 MoE 层，每层包含多个 FFN 专家和路由机制，将 token 分派给 Top\-K 专家。采用细粒度专家分割和共享专家路由机制。
+在稠密模型基础上，将标准 FFN 层替换为 MoE 层，每层包含多个 FFN 专家和路由机制，将 token 分派给 Top-K 专家。采用细粒度专家分割和共享专家路由机制。
 
 ### 模型配置
 
@@ -54,97 +48,92 @@ Qwen2\.5 的关键特性：
 
 ---
 
-## 3 预训练（Pre\-training）
+## 3 预训练（Pre-training）
 
-### 3\.1 预训练数据（Pre\-training Data）
+### 3.1 预训练数据（Pre-training Data）
 
 相比 Qwen2，数据质量和规模均有显著提升，从 7T 扩展至 **18T token**。四大改进：
 
-1. **更好的数据过滤**：利用 Qwen2\-Instruct 模型作为数据质量过滤器，进行多维度分析和评分。受益于 Qwen2 更大的多语言语料预训练，能力更强，实现了更精准的质量评估。
+1. **更好的数据过滤**：利用 Qwen2-Instruct 模型作为数据质量过滤器，进行多维度分析和评分。受益于 Qwen2 更大的多语言语料预训练，能力更强，实现了更精准的质量评估。
+2. **更好的数学和代码数据**：将 Qwen2.5-Math 和 Qwen2.5-Coder 的训练数据整合到预训练中，继承了强大的数学推理和代码生成能力。
+3. **更好的合成数据**：利用 Qwen2-72B-Instruct 和 Qwen2-Math-72B-Instruct 生成高质量合成数据（数学、代码、知识领域），并通过通用奖励模型和专用数学奖励模型进行质量过滤。
+4. **更好的数据混合**：使用 Qwen2-Instruct 模型对不同领域内容进行分类和平衡。对过度代表的领域（电商、社交媒体、娱乐）进行下采样，对高价值但不足的领域（技术、科学、学术研究）进行上采样。
 
-2. **更好的数学和代码数据**：将 Qwen2\.5\-Math 和 Qwen2\.5\-Coder 的训练数据整合到预训练中，继承了强大的数学推理和代码生成能力。
+### 3.2 超参数缩放定律（Scaling Law for Hyper-parameters）
 
-3. **更好的合成数据**：利用 Qwen2\-72B\-Instruct 和 Qwen2\-Math\-72B\-Instruct 生成高质量合成数据（数学、代码、知识领域），并通过通用奖励模型和专用数学奖励模型进行质量过滤。
+基于 Qwen2.5 预训练数据开发超参数缩放定律，不同于传统仅用于确定最优模型大小的方法，Qwen2.5 利用缩放定律来**确定不同模型架构的最优超参数**（批大小 B 和学习率 μ）。
 
-4. **更好的数据混合**：使用 Qwen2\-Instruct 模型对不同领域内容进行分类和平衡。对过度代表的领域（电商、社交媒体、娱乐）进行下采样，对高价值但不足的领域（技术、科学、学术研究）进行上采样。
+实验覆盖范围广泛：稠密模型 44M-14B 参数，MoE 模型 44M-1B 激活参数，训练数据 0.8B-600B token。利用缩放定律预测和比较不同参数配置的 MoE 模型与稠密模型的性能，指导 MoE 模型的超参数配置。
 
-### 3\.2 超参数缩放定律（Scaling Law for Hyper\-parameters）
-
-基于 Qwen2\.5 预训练数据开发超参数缩放定律，不同于传统仅用于确定最优模型大小的方法，Qwen2\.5 利用缩放定律来**确定不同模型架构的最优超参数**（批大小 B 和学习率 μ）。
-
-实验覆盖范围广泛：稠密模型 44M\-14B 参数，MoE 模型 44M\-1B 激活参数，训练数据 0\.8B\-600B token。利用缩放定律预测和比较不同参数配置的 MoE 模型与稠密模型的性能，指导 MoE 模型的超参数配置。
-
-### 3\.3 长上下文预训练（Long\-context Pre\-training）
+### 3.3 长上下文预训练（Long-context Pre-training）
 
 采用两阶段预训练策略：
 
 - **第一阶段**：4,096 token 上下文长度
-
 - **第二阶段**：扩展至 32,768 token，RoPE 基础频率从 10,000 提升至 1,000,000
 
-**Qwen2\.5\-Turbo 的渐进式扩展**：分四阶段推进上下文长度（32K → 64K → 128K → 256K），RoPE 基础频率为 10,000,000。每阶段包含 40% 当前最大长度序列和 60% 较短序列。
+**Qwen2.5-Turbo 的渐进式扩展**：分四阶段推进上下文长度（32K → 64K → 128K → 256K），RoPE 基础频率为 10,000,000。每阶段包含 40% 当前最大长度序列和 60% 较短序列。
 
-**推理阶段扩展**：通过 YARN 和 DCA（双块注意力）实现 4 倍序列长度扩展，Qwen2\.5\-Turbo 可处理最高 100 万 token，其他模型最高 131,072 token。
+**推理阶段扩展**：通过 YARN 和 DCA（双块注意力）实现 4 倍序列长度扩展，Qwen2.5-Turbo 可处理最高 100 万 token，其他模型最高 131,072 token。
 
 ---
 
-## 4 后训练（Post\-training）
+## 4 后训练（Post-training）
 
-Qwen2\.5 后训练相比 Qwen2 的两大进步：
+Qwen2.5 后训练相比 Qwen2 的两大进步：
 
 1. **扩展的 SFT 数据覆盖**：百万级高质量样本，专项解决长序列生成、数学、编程、指令遵循、结构化数据理解、逻辑推理、跨语言迁移和鲁棒系统指令等短板。
+2. **两阶段强化学习**：离线 RL（聚焦推理、事实性、指令遵循等奖励模型难以评估的能力）+ 在线 RL（利用奖励模型检测输出质量细微差异）。
 
-2. **两阶段强化学习**：离线 RL（聚焦推理、事实性、指令遵循等奖励模型难以评估的能力）\+ 在线 RL（利用奖励模型检测输出质量细微差异）。
-
-### 4\.1 监督微调（Supervised Fine\-tuning）
+### 4.1 监督微调（Supervised Fine-tuning）
 
 九大关键增强领域：
 
 1. **长序列生成**：支持最高 8,192 token 的输出上下文长度（前代通常不超过 2,000 token）。采用回译技术从预训练语料的长文本数据中生成查询，施加输出长度约束，用 Qwen2 过滤低质量数据。
 
-    ```Plain Text
-    预训练语料库（长文本）
-            ↓
-       回译技术（Back-translation）
-       "给定长文章，反向生成对应的查询问题"
-            ↓
-       施加输出长度约束
-       "强制模型输出足够长的回答"
-            ↓
-       用Qwen2过滤低质量数据对
-            ↓
-       高质量长响应数据集
-    ```
+```text
+预训练语料库（长文本）
+        ↓
+   回译技术（Back-translation）
+   "给定长文章，反向生成对应的查询问题"
+        ↓
+   施加输出长度约束
+   "强制模型输出足够长的回答"
+        ↓
+   用Qwen2过滤低质量数据对
+        ↓
+   高质量长响应数据集
+```
 
-2. **数学**：引入 Qwen2\.5\-Math 的 Chain\-of\-Thought 数据，包含公共数据集、K\-12 题目集和合成问题。采用拒绝采样 \+ 奖励建模 \+ 标注答案引导，生成逐步推理过程。
+2. **数学**：引入 Qwen2.5-Math 的 Chain-of-Thought 数据，包含公共数据集、K-12 题目集和合成问题。采用拒绝采样 + 奖励建模 + 标注答案引导，生成逐步推理过程。
 
-```Plain Text
+```text
 生成候选答案
-         ↓
+     ↓
 拒绝采样（Rejection Sampling） "只保留最终答案正确的推理过程"
-         ↓
+     ↓
 奖励模型（Reward Model）评分
-         ↓
+     ↓
 人工标注答案作为参考
-         ↓
+     ↓
 高质量逐步推理过程（Step-by-step）
 ```
 
-3. **编程**：整合 Qwen2\.5\-Coder 的指令微调数据。使用多语言代理协作框架，覆盖近 40 种编程语言。从代码 Q\&A 网站合成新样本，从 GitHub 收集算法代码片段。通过多语言沙箱进行静态代码检查和自动化单元测试。
+3. **编程**：整合 Qwen2.5-Coder 的指令微调数据。使用多语言代理协作框架，覆盖近 40 种编程语言。从代码 Q&A 网站合成新样本，从 GitHub 收集算法代码片段。通过多语言沙箱进行静态代码检查和自动化单元测试。
 
 4. **指令遵循**：实现基于代码的严格验证框架。LLM 生成指令和对应的验证代码及单元测试，通过执行反馈的拒绝采样策略精心筛选训练数据。
 
-```Plain Text
+```text
 传统方法：人工判断模型是否遵循指令  ← 主观、效率低
 
 Qwen2.5方法：
 ┌────────────────────────────────────────┐
-│  Step 1: LLM生成指令                   
-│  Step 2: LLM同时生成"验证代码"          
-│          （能自动判断指令是否被遵循）    
-│  Step 3: 生成单元测试用于交叉验证       
-│  Step 4: 执行反馈 → 拒绝采样           
-│          （只保留真正遵循指令的样本）    
+│  Step 1: LLM生成指令                   │
+│  Step 2: LLM同时生成"验证代码"          │
+│          （能自动判断指令是否被遵循）    │
+│  Step 3: 生成单元测试用于交叉验证       │
+│  Step 4: 执行反馈 → 拒绝采样           │
+│          （只保留真正遵循指令的样本）    │
 └────────────────────────────────────────┘
 
 
@@ -167,15 +156,15 @@ Qwen2.5方法：
 
 9. **响应过滤**：采用多种自动标注方法（专门的评论模型和多智能体协作评分系统），仅保留所有评分系统均认定无瑕疵的响应。
 
-最终构建了**超过 100 万条 SFT 样本**的数据集。训练 2 个 epoch，序列长度 32,768 token，学习率从 7×10⁻⁶ 衰减至 7×10⁻⁷，权重衰减 0\.1，梯度裁剪 1\.0。
+最终构建了**超过 100 万条 SFT 样本**的数据集。训练 2 个 epoch，序列长度 32,768 token，学习率从 $7 \times 10^{-6}$ 衰减至 $7 \times 10^{-7}$，权重衰减 0.1，梯度裁剪 1.0。
 
-### 4\.2 离线强化学习（Offline Reinforcement Learning）
+### 4.2 离线强化学习（Offline Reinforcement Learning）
 
 聚焦于存在标准答案但奖励模型难以评估的客观领域（数学、编程、指令遵循、逻辑推理）。使用 SFT 模型对新查询重新采样响应，通过质量检查的响应作为正例，未通过的作为负例，用于 **DPO 训练**。结合人工和自动化审查流程确保训练信号的可靠性。
 
-最终构建约 **15 万训练对**，使用 Online Merging Optimizer 训练 1 个 epoch，学习率 7×10⁻⁷。
+最终构建约 **15 万训练对**，使用 Online Merging Optimizer 训练 1 个 epoch，学习率 $7 \times 10^{-7}$。
 
-### 4\.3 在线强化学习（Online Reinforcement Learning）
+### 4.3 在线强化学习（Online Reinforcement Learning）
 
 #### 奖励模型标注准则
 
@@ -189,166 +178,141 @@ Qwen2.5方法：
 
 采用 **GRPO（Group Relative Policy Optimization）**。训练查询按响应分数方差排序，方差越高越优先处理。每个查询采样 8 个响应，全局批大小 2048，每个 episode 2048 个样本。
 
-```Plain Text
+```text
 公开数据集  ──┐
               ├──→ Query池
 私有复杂数据 ──┘
-                    ↓
-            多阶段模型Checkpoint（SFT，DPO，RL）
-            × 多Temperature采样
-                    ↓
-            候选回答池（高多样性）
-                    ↓
-         人工标注 + 自动标注
-                    ↓
-         偏好对数据集 + DPO数据
-                    ↓
-┌─────────────────────────────────┐
-│         奖励模型训练             │
-└─────────────────────────────────┘
-                    ↓
-         训练好的奖励模型
-                    ↓
-┌─────────────────────────────────┐
-│    在线RL（GRPO）训练            │
-│                                 │
-│  高方差Query优先 → 采样8个回答   │
-│  → 奖励模型打分 → 组内归一化    │
-│  → 更新策略 → 循环              │
-└─────────────────────────────────┘
+                ↓
+        多阶段模型Checkpoint（SFT，DPO，RL）
+        × 多Temperature采样
+                ↓
+        候选回答池（高多样性）
+                ↓
+     人工标注 + 自动标注
+                ↓
+     偏好对数据集 + DPO数据
+                ↓
+┌─────────────────────────────┐
+│         奖励模型训练         │
+└─────────────────────────────┘
+                ↓
+     训练好的奖励模型
+                ↓
+┌─────────────────────────────┐
+│    在线RL（GRPO）训练        │
+│                             │
+│  高方差Query优先 → 采样8个回答 │
+│  → 奖励模型打分 → 组内归一化  │
+│  → 更新策略 → 循环            │
+└─────────────────────────────┘
 ```
 
-### 4\.4 长上下文微调（Long Context Fine\-tuning）
+### 4.4 长上下文微调（Long Context Fine-tuning）
 
-针对 Qwen2\.5\-Turbo 的进一步上下文扩展：
+针对 Qwen2.5-Turbo 的进一步上下文扩展：
 
 - **SFT 阶段**：两步走——第一步仅用短指令（≤32K token）微调；第二步结合短指令（≤32K）和长指令（≤262K）。
-
 - **RL 阶段**：仅使用短指令训练（长上下文 RL 计算成本高、缺乏适用的长上下文奖励模型），但发现仅在短指令上的 RL 也能显著提升长上下文任务的人类偏好对齐。
 
 ---
 
 ## 5 评估（Evaluation）
 
-采用去污染策略（n\-gram 匹配 \+ LCS 约束）防止测试数据泄露。
+采用去污染策略（n-gram 匹配 + LCS 约束）防止测试数据泄露。
 
-### 5\.1 基础模型（Base Models）
+### 5.1 基础模型（Base Models）
 
-评估涵盖通用任务（MMLU、BBH 等）、数学与科学任务（GPQA、MATH、GSM8K 等）、编程任务（HumanEval、MBPP、MultiPL\-E 等）和多语言任务四大类。
+评估涵盖通用任务（MMLU、BBH 等）、数学与科学任务（GPQA、MATH、GSM8K 等）、编程任务（HumanEval、MBPP、MultiPL-E 等）和多语言任务四大类。
 
-**Qwen2\.5\-72B \& Qwen2\.5\-Plus**：
+**Qwen2.5-72B & Qwen2.5-Plus**：
 
-- Qwen2\.5\-72B 在同类模型中全面领先，性能可比 Llama\-3\-405B（仅用其 1/5 参数）
+- Qwen2.5-72B 在同类模型中全面领先，性能可比 Llama-3-405B（仅用其 1/5 参数）
+- 相比 Qwen2-72B，几乎所有基准均有显著提升，尤其在通用任务、数学和编程上
+- Qwen2.5-Plus 在 MMLU-Pro 上达到 64.0，比 Qwen2.5-72B 高 5.9 分
+- 关键成绩：MMLU 86.1、MATH 62.1、GSM8K 91.5、MBPP 84.7
 
-- 相比 Qwen2\-72B，几乎所有基准均有显著提升，尤其在通用任务、数学和编程上
+**Qwen2.5-14B/32B & Qwen2.5-Turbo**：
 
-- Qwen2\.5\-Plus 在 MMLU\-Pro 上达到 64\.0，比 Qwen2\.5\-72B 高 5\.9 分
+- Qwen2.5-32B 常常超越更大规模的同类模型，MATH 57.7、MBPP 84.5
+- Qwen2.5-Turbo 尽管训练和推理成本远低于 Qwen2.5-14B，但取得了可比性能
 
-- 关键成绩：MMLU 86\.1、MATH 62\.1、GSM8K 91\.5、MBPP 84\.7
+**Qwen2.5-7B**：
 
-**Qwen2\.5\-14B/32B \& Qwen2\.5\-Turbo**：
+- 非嵌入参数仅 6.5B，在众多基准上超越前代和同类模型
+- MMLU 74.2、MATH 49.8、HumanEval 57.9
 
-- Qwen2\.5\-32B 常常超越更大规模的同类模型，MATH 57\.7、MBPP 84\.5
+**Qwen2.5-0.5B/1.5B/3B**：
 
-- Qwen2\.5\-Turbo 尽管训练和推理成本远低于 Qwen2\.5\-14B，但取得了可比性能
+- 持续保持强劲性能，Qwen2.5-0.5B 在多项数学和编程任务上甚至超越 Gemma2-2.6B
 
-**Qwen2\.5\-7B**：
+### 5.2 指令微调模型（Instruction-tuned Model）
 
-- 非嵌入参数仅 6\.5B，在众多基准上超越前代和同类模型
+#### 5.2.1 公开基准评估（Open Benchmark Evaluation）
 
-- MMLU 74\.2、MATH 49\.8、HumanEval 57\.9
+**Qwen2.5-72B-Instruct & Qwen2.5-Plus**：
 
-**Qwen2\.5\-0\.5B/1\.5B/3B**：
+- Qwen2.5-72B-Instruct 在 MMLU-redux、MATH、MBPP、MultiPL-E、LiveCodeBench、Arena-Hard、MTBench 等关键基准上超越 Llama-3.1-405B-Instruct
+- Qwen2.5-Plus 在 13 个基准中的 9 个优于 Qwen2.5-72B-Instruct
+- 关键成绩：MATH 83.1、Arena-Hard 81.2、MTBench 9.35、LiveCodeBench 55.5
 
-- 持续保持强劲性能，Qwen2\.5\-0\.5B 在多项数学和编程任务上甚至超越 Gemma2\-2\.6B
+**Qwen2.5-14B/32B-Instruct & Qwen2.5-Turbo**：
 
-### 5\.2 指令微调模型（Instruction\-tuned Model）
+- Qwen2.5-32B-Instruct 在大多数任务上优于同类模型
+- 开源的 Qwen2.5-14B-Instruct 可匹敌 GPT-4o-mini
+- Qwen2.5-Turbo 在 10 个基准中的 8 个优于 Qwen2.5-14B-Instruct
 
-#### 5\.2\.1 公开基准评估（Open Benchmark Evaluation）
+**Qwen2.5-7B-Instruct**：
 
-**Qwen2\.5\-72B\-Instruct \& Qwen2\.5\-Plus**：
-
-- Qwen2\.5\-72B\-Instruct 在 MMLU\-redux、MATH、MBPP、MultiPL\-E、LiveCodeBench、Arena\-Hard、MTBench 等关键基准上超越 Llama\-3\.1\-405B\-Instruct
-
-- Qwen2\.5\-Plus 在 13 个基准中的 9 个优于 Qwen2\.5\-72B\-Instruct
-
-- 关键成绩：MATH 83\.1、Arena\-Hard 81\.2、MTBench 9\.35、LiveCodeBench 55\.5
-
-**Qwen2\.5\-14B/32B\-Instruct \& Qwen2\.5\-Turbo**：
-
-- Qwen2\.5\-32B\-Instruct 在大多数任务上优于同类模型
-
-- 开源的 Qwen2\.5\-14B\-Instruct 可匹敌 GPT\-4o\-mini
-
-- Qwen2\.5\-Turbo 在 10 个基准中的 8 个优于 Qwen2\.5\-14B\-Instruct
-
-**Qwen2\.5\-7B\-Instruct**：
-
-- 在除 IFEval 外的所有任务上显著超越 Gemma2\-9B\-IT 和 Llama3\.1\-8B\-Instruct
-
-- 数学（MATH 75\.5）和编程（HumanEval 84\.8）优势明显
+- 在除 IFEval 外的所有任务上显著超越 Gemma2-9B-IT 和 Llama3.1-8B-Instruct
+- 数学（MATH 75.5）和编程（HumanEval 84.8）优势明显
 
 **更小模型**：
 
-- Qwen2\.5\-3B\-Instruct 在数学和编程上超越参数更多的 Phi3\.5\-mini 和 MiniCPM3\-4B
+- Qwen2.5-3B-Instruct 在数学和编程上超越参数更多的 Phi3.5-mini 和 MiniCPM3-4B
+- Qwen2.5-0.5B/1.5B-Instruct 相比前代有大幅提升
 
-- Qwen2\.5\-0\.5B/1\.5B\-Instruct 相比前代有大幅提升
-
-#### 5\.2\.2 内部自动评估（In\-house Automatic Evaluation）
+#### 5.2.2 内部自动评估（In-house Automatic Evaluation）
 
 **英文和中文评估**：
 
-- Qwen2\.5\-0\.5B 性能可媲美甚至超越 Qwen2\-1\.5B
-
-- Qwen2\.5\-3B 性能可比 Qwen2\-7B
-
-- Qwen2\.5\-32B 显著超越 Qwen2\-72B
-
-- Qwen2\.5\-72B 在除指令遵循外的所有指标上匹敌或超越 Llama\-3\.1\-405B
-
-- Qwen2\.5\-Plus 弥补了中文指令遵循的不足，进一步增强其他领域优势
+- Qwen2.5-0.5B 性能可媲美甚至超越 Qwen2-1.5B
+- Qwen2.5-3B 性能可比 Qwen2-7B
+- Qwen2.5-32B 显著超越 Qwen2-72B
+- Qwen2.5-72B 在除指令遵循外的所有指标上匹敌或超越 Llama-3.1-405B
+- Qwen2.5-Plus 弥补了中文指令遵循的不足，进一步增强其他领域优势
 
 **多语言评估**：
 
 - 扩展了 IFEval（多语言版）、知识利用（AMMLU、JMMLU、KMMLU 等）、MGSM8K（扩展版）和文化细微差别（BLEnD）
-
-- Qwen2\.5 在指令遵循、多语言知识和数学推理方面表现出色
-
+- Qwen2.5 在指令遵循、多语言知识和数学推理方面表现出色
 - 文化细微差别理解相比 Qwen2 有显著改进，但仍有提升空间
 
-#### 5\.2\.3 奖励模型（Reward Model）
+#### 5.2.3 奖励模型（Reward Model）
 
-在 Reward Bench、RMB、PPE 和内部中文人类偏好基准上评估。Qwen2\.5\-RM\-72B 在 PPE 和中文人类偏好上领先，在 RMB 上仅次于 Athene\-RM\-70B。
+在 Reward Bench、RMB、PPE 和内部中文人类偏好基准上评估。Qwen2.5-RM-72B 在 PPE 和中文人类偏好上领先，在 RMB 上仅次于 Athene-RM-70B。
 
 **关键发现**：
 
 - 在单一基准上过度优化可能触发 Goodhart 定律，导致其他基准性能下降
-
 - 当前 RM 评估基准不能准确预测其指导的 RL 模型的性能——RM 基准高分不一定意味着更优的下游 RL 模型
 
-#### 5\.2\.4 长上下文能力（Long Context Capabilities）
+#### 5.2.4 长上下文能力（Long Context Capabilities）
 
-使用 RULER、LV\-Eval 和 Longbench\-Chat 三个基准评估。
+使用 RULER、LV-Eval 和 Longbench-Chat 三个基准评估。
 
-- 配备 DCA \+ YARN 的 Qwen2\.5 模型展现出强大的长上下文处理能力
-
-- **Qwen2\.5\-72B\-Instruct** 在所有上下文长度上表现最强，显著超越现有开源长上下文模型和 GPT\-4o\-mini、GPT\-4 等专有模型
-
-- **Qwen2\.5\-Turbo** 在 100 万 token 密钥检索任务中达到 100% 准确率
-
-- 基于 MInference 开发的稀疏注意力机制将注意力计算负载减少 12\.5 倍，TTFT 加速 3\.2\-4\.3 倍
+- 配备 DCA + YARN 的 Qwen2.5 模型展现出强大的长上下文处理能力
+- **Qwen2.5-72B-Instruct** 在所有上下文长度上表现最强，显著超越现有开源长上下文模型和 GPT-4o-mini、GPT-4 等专有模型
+- **Qwen2.5-Turbo** 在 100 万 token 密钥检索任务中达到 100% 准确率
+- 基于 MInference 开发的稀疏注意力机制将注意力计算负载减少 12.5 倍，TTFT 加速 3.2-4.3 倍
 
 ---
 
 ## 6 结论（Conclusion）
 
-Qwen2\.5 在预训练（18T token）和后训练（SFT \+ 多阶段 RL）方面均有重大进步，显著提升了人类偏好对齐、长文本生成和结构化数据分析能力。开源模型从 0\.5B 到 72B，专有 MoE 模型提供高性价比选项。Qwen2\.5\-72B\-Instruct 以 6 倍小的规模匹敌 Llama\-3\-405B\-Instruct。
+Qwen2.5 在预训练（18T token）和后训练（SFT + 多阶段 RL）方面均有重大进步，显著提升了人类偏好对齐、长文本生成和结构化数据分析能力。开源模型从 0.5B 到 72B，专有 MoE 模型提供高性价比选项。Qwen2.5-72B-Instruct 以 6 倍小的规模匹敌 Llama-3-405B-Instruct。
 
 **未来方向**：
 
 1. 通过更广泛、更多样、更高质量的数据迭代改进基础和指令微调模型
-
 2. 继续发展多模态模型，将文本、视觉和听觉模态整合到统一框架
-
 3. 通过推理计算资源的战略性扩展来增强模型的推理能力
-
