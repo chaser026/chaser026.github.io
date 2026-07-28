@@ -1,6 +1,5 @@
 # Qwen Technical Report
 
-视频链接: https://pan.baidu.com/s/1MvSo33Fir8YlRd07HyvVaw?pwd=x34f 提取码: x34f
 
 ## 1 Introduction（引言）
 

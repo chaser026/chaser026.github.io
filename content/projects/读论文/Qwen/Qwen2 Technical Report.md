@@ -1,8 +1,5 @@
 # Qwen2 Technical Report
 
-视频链接：
-
-链接: https://pan.baidu.com/s/1JHWnRWhaMtQe2WjN-9PWrw?pwd=1kqc 提取码: 1kqc
 
 **摘要**
 

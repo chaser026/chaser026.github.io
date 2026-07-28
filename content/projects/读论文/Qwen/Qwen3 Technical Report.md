@@ -1,9 +1,5 @@
 # Qwen3 Technical Report
 
-通过网盘分享的文件：qwen3技术报告.mp4
-
-链接: https://pan.baidu.com/s/1Y5WYUSVXXrp1NSxGJUwbEg?pwd=3tb3 提取码: 3tb3
-
 **Abstract**
 
 Qwen3 是 Qwen 模型家族的最新版本，包含 **Dense** 和 **MoE** 两种架构，参数规模从 **0.6B 到 235B**。核心创新包括：

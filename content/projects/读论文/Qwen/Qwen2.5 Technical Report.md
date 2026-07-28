@@ -1,9 +1,5 @@
 # Qwen2.5 Technical Report
 
-通过网盘分享的文件：qwen2.5技术报告.mp4
-
-链接: https://pan.baidu.com/s/1amASUdmDAow74IlnPMXg3A?pwd=cbz5 提取码: cbz5
-
 **摘要（Abstract）**
 
 Qwen2.5 是一个全面的大语言模型系列，在预训练和后训练阶段均有显著改进。预训练数据从 Qwen2 的 7 万亿 token 扩展至 **18 万亿 token**，为常识、专家知识和推理能力奠定了坚实基础。后训练方面，采用了超过 **100 万样本**的精细化监督微调（SFT），以及包含离线 DPO 和在线 GRPO 的**多阶段强化学习**，显著提升了人类偏好对齐、长文本生成、结构化数据分析和指令遵循能力。
