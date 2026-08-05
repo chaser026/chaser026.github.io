@@ -32,9 +32,7 @@
 
 **词表构建**：基于 OpenAI 的 tiktoken（cl100k_base）进行 BPE 分词初始化。
 
-|  |
-|----|
-| cl100k 是 OpenAI 的开源快速 BPE 分词库 tiktoken 中包含的基础词表，该词表在海量英文文本和代码数据上进行了深度的 BPE（字节对编码）统计与训练，对英文和代码的切分极其高效。但因主要针对英文，处理中文等其他语言时效率较低（通常会把一个汉字切碎成好几个毫无意义的字节 token）。 |
+cl100k 是 OpenAI 的开源快速 BPE 分词库 tiktoken 中包含的基础词表，该词表在海量英文文本和代码数据上进行了深度的 BPE（字节对编码）统计与训练，对英文和代码的切分极其高效。但因主要针对英文，处理中文等其他语言时效率较低（通常会把一个汉字切碎成好几个毫无意义的字节 token）。
 
 **词表扩充**：
 - 扩充了常用中文字符、词组及其他多语言词汇
@@ -42,9 +40,9 @@
 
 **最终词表**：大小约为 **152K**，在多语言（尤其是中文）上拥有极高的压缩效率。
 
-|  |
-|----|
-| 保留 cl100k 意味着继承了 GPT-4 的英文和代码分词能力<br>额外统计并附加 52K 的中文及多语言高频词，使得模型处理中文时无需用多个繁琐的字节拼凑一个词，极大提高了中文训练效率和推理速度<br>这 52K 个 token 对应的 merges 规则，是在冻结前 100K 规则的前提下，在中文语料上继续推演 BPE 算法 52,000 步得来的。构造文件时，直接把这 52,000 步的合并历史按照生成顺序（Rank 100,277 → 152,000）追加到原文件末尾即可。 |
+- 保留 cl100k 意味着继承了 GPT-4 的英文和代码分词能力
+- 额外统计并附加 52K 的中文及多语言高频词，使得模型处理中文时无需用多个繁琐的字节拼凑一个词，极大提高了中文训练效率和推理速度
+- 这 52K 个 token 对应的 merges 规则，是在冻结前 100K 规则的前提下，在中文语料上继续推演 BPE 算法 52,000 步得来的。构造文件时，直接把这 52,000 步的合并历史按照生成顺序（Rank 100,277 → 152,000）追加到原文件末尾即可。
 
 ### 2.3 Architecture（模型架构）
 
@@ -97,9 +95,21 @@
 
 **训练流程**：
 
-| Plain Text |
-|----|
-| 1. 收集 prompt<br>↓<br>2. 用多个 Qwen 模型生成回答<br>↓<br>3. 人类比较回答<br>↓<br>4. 形成 pairwise preference data<br>↓<br>5. PMP 预训练 reward model<br>↓<br>6. 用高质量数据微调 reward model<br>↓<br>7. 得到最终 RM |
+```text
+1. 收集 prompt
+↓
+2. 用多个 Qwen 模型生成回答
+↓
+3. 人类比较回答
+↓
+4. 形成 pairwise preference data
+↓
+5. PMP 预训练 reward model
+↓
+6. 用高质量数据微调 reward model
+↓
+7. 得到最终 RM
+```
 
 **RM 训练损失**：
 
@@ -115,9 +125,15 @@ $$\text{取最后一个 token}\overset{\phantom{\text{Pooling layer}}}{\rightarr
 
 **每个训练 Step 的流程**：
 
-| Plain Text |
-|----|
-| 1. 从 PPO Buffer 采样 → 计算 L_PPO<br>↓<br>2. 从 Pretrain Dataset 采样 → 计算 L_pretrain = -log P(x)<br>↓<br>3. L_total = L_PPO + λ · L_pretrain<br>↓<br>4. 反向传播更新模型 |
+```text
+1. 从 PPO Buffer 采样 → 计算 L_PPO
+↓
+2. 从 Pretrain Dataset 采样 → 计算 L_pretrain = -log P(x)
+↓
+3. L_total = L_PPO + λ · L_pretrain
+↓
+4. 反向传播更新模型
+```
 
 ### 3.3 Automatic and Human Evaluation of Aligned Models（对齐模型评测）
 
@@ -128,9 +144,15 @@ $$\text{取最后一个 token}\overset{\phantom{\text{Pooling layer}}}{\rightarr
 
 通过 **Self-instruct** 策略构造工具调用数据，融入基础 SFT 数据中：
 
-| Plain Text |
-|----|
-| 第1轮：生成 → 过滤 → 收集样本<br>↓<br>第2轮：用新样本微调 QWEN → 用改进的 QWEN 生成更好的样本<br>↓<br>第3轮：重复...<br>↓<br>最终：约 2000 个高质量样本 |
+```text
+第1轮：生成 → 过滤 → 收集样本
+↓
+第2轮：用新样本微调 QWEN → 用改进的 QWEN 生成更好的样本
+↓
+第3轮：重复...
+↓
+最终：约 2000 个高质量样本
+```
 
 **模型能力**：
 - 通过 **ReAct 提示法** 调用未见过的外部 API

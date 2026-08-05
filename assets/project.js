@@ -5,6 +5,13 @@ const project = (site.projects || []).find(p => p.id === course);
 const documents = (site.documents || []).filter(d => d.project === course);
 const root = document.querySelector('#project');
 
+// Site chrome（与 index/reader 页一致，统一取自 content/projects.json）
+{
+  const meta = site.site || {};
+  if (meta.title) document.querySelectorAll('[data-site-title]').forEach(el => el.textContent = meta.title);
+  if (meta.tagline) document.querySelectorAll('[data-site-tagline]').forEach(el => el.textContent = meta.tagline);
+}
+
 const assignmentTitles = {
   A1: '架构实现与预训练实战',
   A5: '对齐与后训练',

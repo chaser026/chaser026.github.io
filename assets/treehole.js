@@ -3,6 +3,12 @@
  * 若本文件在顶层声明 const t 会触发 "Identifier 't' has already been declared"，导致整段脚本失效。 */
 (function () {
 const site = window.SITE || { site: {} };
+const meta = site.site || {};
+
+// 站点标题等同步（与 index/reader 页一致，统一取自 content/projects.json）
+if (meta.title) document.querySelectorAll('[data-site-title]').forEach(el => el.textContent = meta.title);
+if (meta.tagline) document.querySelectorAll('[data-site-tagline]').forEach(el => el.textContent = meta.tagline);
+
 const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // 1) 萤火
