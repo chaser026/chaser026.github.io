@@ -146,11 +146,16 @@ function protectMath(md) {
       i++;
       let closed = false;
       while (i < lines.length) {
-        const idx = lines[i].indexOf(opened.right);
-        if (idx === -1) { buf.push(lines[i]); i++; continue; }
-        buf.push(lines[i].slice(0, idx + opened.right.length));
+        // 续行若在引用块内（> $$ ...），剥掉引用前缀，避免 "> " 混入公式内容
+        const qm = /^\s{0,3}>\s?/.exec(lines[i]);
+        const content = qm ? lines[i].slice(qm[0].length) : lines[i];
+        const idx = content.indexOf(opened.right);
+        if (idx === -1) { buf.push(content); i++; continue; }
+        buf.push(content.slice(0, idx + opened.right.length));
         segments[opened.slot] = buf.join('\n');
-        lines[i] = lines[i].slice(idx + opened.right.length); // 该行剩余部分仍需正常处理
+        const rest = content.slice(idx + opened.right.length);
+        // 闭合行的剩余部分仍属于引用块：保留引用前缀，避免把块截断
+        lines[i] = rest.trim() ? (qm ? qm[0] + rest : rest) : (qm ? '>' : '');
         closed = true;
         break;
       }
